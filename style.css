@@ -4,6 +4,7 @@
 
 
 body {
+
     margin: 0;
 
     font-family:
@@ -14,10 +15,12 @@ body {
     background: #f3f5f7;
 
     color: #222;
+
 }
 
 
 .container {
+
     width: min(
         1000px,
         94%
@@ -26,10 +29,12 @@ body {
     margin:
         30px auto
         60px;
+
 }
 
 
 header {
+
     background: white;
 
     padding: 30px;
@@ -43,23 +48,29 @@ header {
     box-shadow:
         0 4px 20px
         rgba(0,0,0,.06);
+
 }
 
 
 header h1 {
+
     margin:
         0 0 8px;
+
 }
 
 
 header p {
+
     margin: 0;
 
     color: #666;
+
 }
 
 
 section {
+
     background: white;
 
     padding: 25px;
@@ -71,54 +82,63 @@ section {
     box-shadow:
         0 4px 20px
         rgba(0,0,0,.05);
+
 }
 
 
 section h2 {
+
     margin-top: 0;
 
     margin-bottom: 20px;
 
     font-size: 20px;
+
 }
 
 
 .grid {
+
     display: grid;
 
     grid-template-columns:
         1fr 1fr;
 
     gap: 18px;
+
 }
 
 
 .field {
-    margin-bottom: 20px;
+
+    margin-bottom: 18px;
+
 }
 
 
 .full {
+
     grid-column:
         1 / -1;
+
 }
 
 
 label {
+
     display: block;
 
     margin-bottom: 7px;
 
     font-weight: 600;
+
 }
 
 
-input[type="text"],
-input[type="number"],
-input[type="tel"],
-input[type="date"],
+input,
 select,
 textarea {
+
     width: 100%;
 
     padding:
@@ -134,70 +154,119 @@ textarea {
     outline: none;
 
     background: white;
+
 }
 
 
 input:focus,
 select:focus,
 textarea:focus {
+
     border-color: #555;
+
 }
 
 
 textarea {
+
     resize: vertical;
+
 }
 
 
-/* RADIO BUTTONS */
+.photo-area {
 
-.radio-group {
-    display: flex;
+    text-align: center;
 
-    flex-wrap: wrap;
-
-    gap: 10px;
-
-    margin-top: 8px;
 }
 
 
-.radio-option {
+.photo-preview {
+
+    width: 220px;
+
+    height: 260px;
+
+    margin:
+        0 auto
+        15px;
+
+    border:
+        2px dashed #ccc;
+
+    border-radius: 12px;
+
     display: flex;
+
+    justify-content: center;
 
     align-items: center;
 
-    gap: 7px;
+    overflow: hidden;
+
+    background: #fafafa;
+
+    color: #888;
+
+}
+
+
+.photo-preview img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+}
+
+
+.photo-button {
+
+    display: inline-block;
 
     padding:
-        10px 15px;
+        12px 20px;
 
-    border:
-        1px solid #d3d7dc;
+    background: #222;
+
+    color: white;
 
     border-radius: 9px;
 
     cursor: pointer;
 
-    font-weight: normal;
-
-    background: #fafafa;
 }
 
 
-.radio-option:hover {
-    background: #f0f0f0;
+.remove-button {
+
+    margin-left: 8px;
+
+    padding:
+        12px 20px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #ddd;
+
+    cursor: pointer;
+
 }
 
 
-.radio-option input {
-    width: auto;
+.hidden {
 
-    margin: 0;
+    display: none;
+
 }
 
 
 .submit-button {
+
     width: 100%;
 
     padding: 16px;
@@ -215,22 +284,21 @@ textarea {
     font-weight: bold;
 
     cursor: pointer;
-}
 
-
-.submit-button:hover {
-    background: #333;
 }
 
 
 .submit-button:disabled {
+
     opacity: .6;
 
     cursor: not-allowed;
+
 }
 
 
 .message {
+
     margin-top: 15px;
 
     padding: 14px;
@@ -238,35 +306,29 @@ textarea {
     border-radius: 9px;
 
     display: none;
+
 }
 
 
 .message.success {
+
     display: block;
 
     background: #e8f7e8;
 
     color: #176b17;
+
 }
 
 
 .message.error {
+
     display: block;
 
     background: #fdeaea;
 
     color: #a00000;
-}
 
-
-footer {
-    text-align: center;
-
-    margin-top: 30px;
-
-    color: #666;
-
-    font-size: 14px;
 }
 
 
@@ -275,36 +337,34 @@ footer {
 ) {
 
     .grid {
+
         grid-template-columns:
             1fr;
+
     }
 
 
     .full {
+
         grid-column:
             auto;
+
     }
 
 
     section {
+
         padding: 18px;
+
     }
 
 
     .container {
+
         width: 96%;
 
         margin-top: 12px;
-    }
 
-
-    .radio-group {
-        flex-direction: column;
-    }
-
-
-    .radio-option {
-        width: 100%;
     }
 
 }

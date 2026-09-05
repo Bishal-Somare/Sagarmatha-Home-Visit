@@ -16,6 +16,24 @@ const sectionSelect =
     );
 
 
+const photoInput =
+    document.getElementById(
+        "studentPhoto"
+    );
+
+
+const photoPreview =
+    document.getElementById(
+        "photoPreview"
+    );
+
+
+const removePhoto =
+    document.getElementById(
+        "removePhoto"
+    );
+
+
 const submitButton =
     document.getElementById(
         "submitButton"
@@ -30,6 +48,8 @@ const message =
 
 let configuration = {};
 
+let compressedPhoto = null;
+
 
 /****************************************************
  * LOAD CONFIGURATION
@@ -37,92 +57,52 @@ let configuration = {};
 
 async function loadConfiguration() {
 
-    classSelect.disabled = true;
-
-    sectionSelect.disabled = true;
-
-    classSelect.innerHTML = `
-        <option value="">
-            Loading classes...
-        </option>
-    `;
-
-    sectionSelect.innerHTML = `
-        <option value="">
-            Select Section
-        </option>
-    `;
-
-
     try {
+
+        classSelect.disabled =
+            true;
+
+
+        sectionSelect.disabled =
+            true;
+
+
+        classSelect.innerHTML = `
+            <option value="">
+                Loading classes...
+            </option>
+        `;
+
 
         const response =
             await fetch(
                 "/api/config",
                 {
-                    method: "GET",
-
-                    cache: "no-store",
-
-                    headers: {
-                        "Accept":
-                            "application/json"
-                    }
+                    cache: "no-store"
                 }
             );
 
 
-        const text =
-            await response.text();
-
-
-        console.log(
-            "Config HTTP status:",
-            response.status
-        );
-
-
-        console.log(
-            "Config response:",
-            text
-        );
-
-
-        let result;
-
-
-        try {
-
-            result =
-                JSON.parse(text);
-
-        }
-
-        catch (error) {
+        if (!response.ok) {
 
             throw new Error(
-                "Configuration server returned invalid JSON: " +
-                text.substring(0, 300)
+                "Unable to connect to server."
             );
 
         }
 
 
-        if (
-            !response.ok
-        ) {
-
-            throw new Error(
-                result.error ||
-                `Configuration request failed (${response.status}).`
-            );
-
-        }
+        const result =
+            await response.json();
 
 
-        if (
-            !result.success
-        ) {
+        console.log(
+            "Configuration:",
+            result
+        );
+
+
+        if (!result.success) {
 
             throw new Error(
                 result.error ||
@@ -147,7 +127,7 @@ async function loadConfiguration() {
         ) {
 
             throw new Error(
-                "No classes found in the Configuration sheet."
+                "No classes found in Configuration sheet."
             );
 
         }
@@ -161,45 +141,20 @@ async function loadConfiguration() {
         classSelect.disabled =
             false;
 
-
-        clearMessage();
-
-
-        console.log(
-            "Classes loaded:",
-            configuration
-        );
-
     }
 
     catch (error) {
 
         console.error(
-            "Configuration error:",
             error
         );
 
 
         classSelect.innerHTML = `
             <option value="">
-                Unable to load classes
+                Failed to load classes
             </option>
         `;
-
-
-        sectionSelect.innerHTML = `
-            <option value="">
-                Unable to load sections
-            </option>
-        `;
-
-
-        classSelect.disabled =
-            true;
-
-
-        sectionSelect.disabled =
-            true;
 
 
         showMessage(
@@ -208,6 +163,7 @@ async function loadConfiguration() {
         );
 
     }
+
 }
 
 
@@ -350,6 +306,7 @@ function populateClasses(
 
         }
     );
+
 }
 
 
@@ -376,9 +333,7 @@ classSelect.addEventListener(
             true;
 
 
-        if (
-            !selectedClass
-        ) {
+        if (!selectedClass) {
 
             return;
 
@@ -404,10 +359,10 @@ classSelect.addEventListener(
 
 
         if (
+            !sections ||
             !Array.isArray(
                 sections
-            ) ||
-            sections.length === 0
+            )
         ) {
 
             showMessage(
@@ -438,9 +393,10 @@ classSelect.addEventListener(
                     section;
 
 
-                sectionSelect.appendChild(
-                    option
-                );
+                sectionSelect
+                    .appendChild(
+                        option
+                    );
 
             }
         );
@@ -449,11 +405,255 @@ classSelect.addEventListener(
         sectionSelect.disabled =
             false;
 
+    }
+);
 
-        clearMessage();
+
+/****************************************************
+ * PHOTO
+ ****************************************************/
+
+photoInput.addEventListener(
+    "change",
+    async function () {
+
+        const file =
+            this.files[0];
+
+
+        if (!file) {
+
+            return;
+
+        }
+
+
+        if (
+            !file.type.startsWith(
+                "image/"
+            )
+        ) {
+
+            showMessage(
+                "Please select an image.",
+                "error"
+            );
+
+
+            this.value = "";
+
+
+            return;
+
+        }
+
+
+        try {
+
+            compressedPhoto =
+                await compressImage(
+                    file,
+                    1200,
+                    0.75
+                );
+
+
+            photoPreview.innerHTML = `
+
+                <img
+                    src="${compressedPhoto.base64}"
+                    alt="Student Photo"
+                >
+
+            `;
+
+
+            removePhoto.classList
+                .remove(
+                    "hidden"
+                );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                error
+            );
+
+
+            showMessage(
+                "Unable to process photo.",
+                "error"
+            );
+
+        }
 
     }
 );
+
+
+/****************************************************
+ * REMOVE PHOTO
+ ****************************************************/
+
+removePhoto.addEventListener(
+    "click",
+    function () {
+
+        photoInput.value =
+            "";
+
+
+        compressedPhoto =
+            null;
+
+
+        photoPreview.innerHTML = `
+
+            <span>
+                No photo selected
+            </span>
+
+        `;
+
+
+        removePhoto.classList
+            .add(
+                "hidden"
+            );
+
+    }
+);
+
+
+/****************************************************
+ * COMPRESS IMAGE
+ ****************************************************/
+
+function compressImage(
+    file,
+    maxWidth,
+    quality
+) {
+
+    return new Promise(
+        (resolve, reject) => {
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                event => {
+
+                    const image =
+                        new Image();
+
+
+                    image.onload =
+                        () => {
+
+                            let width =
+                                image.width;
+
+
+                            let height =
+                                image.height;
+
+
+                            if (
+                                width >
+                                maxWidth
+                            ) {
+
+                                height =
+                                    height *
+                                    (
+                                        maxWidth /
+                                        width
+                                    );
+
+
+                                width =
+                                    maxWidth;
+
+                            }
+
+
+                            const canvas =
+                                document.createElement(
+                                    "canvas"
+                                );
+
+
+                            canvas.width =
+                                width;
+
+
+                            canvas.height =
+                                height;
+
+
+                            const context =
+                                canvas.getContext(
+                                    "2d"
+                                );
+
+
+                            context.drawImage(
+                                image,
+                                0,
+                                0,
+                                width,
+                                height
+                            );
+
+
+                            const base64 =
+                                canvas.toDataURL(
+                                    "image/jpeg",
+                                    quality
+                                );
+
+
+                            resolve({
+
+                                base64:
+
+                                    base64,
+
+                                mimeType:
+
+                                    "image/jpeg"
+
+                            });
+
+                        };
+
+
+                    image.onerror =
+                        reject;
+
+
+                    image.src =
+                        event.target.result;
+
+                };
+
+
+            reader.onerror =
+                reject;
+
+
+            reader.readAsDataURL(
+                file
+            );
+
+        }
+    );
+
+}
 
 
 /****************************************************
@@ -476,6 +676,7 @@ form.addEventListener(
                 "error"
             );
 
+
             return;
 
         }
@@ -489,6 +690,7 @@ form.addEventListener(
                 "Please select a section.",
                 "error"
             );
+
 
             return;
 
@@ -527,8 +729,26 @@ form.addEventListener(
             );
 
 
+            data.className =
+                classSelect.value;
+
+
+            data.section =
+                sectionSelect.value;
+
+
+            if (
+                compressedPhoto
+            ) {
+
+                data.photo =
+                    compressedPhoto;
+
+            }
+
+
             console.log(
-                "Submitting data:",
+                "Submitting:",
                 data
             );
 
@@ -544,9 +764,6 @@ form.addEventListener(
                         headers: {
 
                             "Content-Type":
-                                "application/json",
-
-                            "Accept":
                                 "application/json"
 
                         },
@@ -560,30 +777,8 @@ form.addEventListener(
                 );
 
 
-            const text =
-                await response.text();
-
-
-            let result;
-
-
-            try {
-
-                result =
-                    JSON.parse(
-                        text
-                    );
-
-            }
-
-            catch {
-
-                throw new Error(
-                    "Server returned invalid JSON: " +
-                    text.substring(0, 300)
-                );
-
-            }
+            const result =
+                await response.json();
 
 
             console.log(
@@ -593,7 +788,6 @@ form.addEventListener(
 
 
             if (
-                !response.ok ||
                 !result.success
             ) {
 
@@ -625,17 +819,35 @@ form.addEventListener(
                 true;
 
 
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
+            compressedPhoto =
+                null;
+
+
+            photoPreview.innerHTML = `
+                <span>
+                    No photo selected
+                </span>
+            `;
+
+
+            removePhoto.classList
+                .add(
+                    "hidden"
+                );
+
+
+            window.scrollTo(
+                {
+                    top: 0,
+                    behavior: "smooth"
+                }
+            );
 
         }
 
         catch (error) {
 
             console.error(
-                "Submission error:",
                 error
             );
 
@@ -681,20 +893,8 @@ function showMessage(
 }
 
 
-function clearMessage() {
-
-    message.textContent =
-        "";
-
-
-    message.className =
-        "message";
-
-}
-
-
 /****************************************************
- * START
+ * START APPLICATION
  ****************************************************/
 
 loadConfiguration();
