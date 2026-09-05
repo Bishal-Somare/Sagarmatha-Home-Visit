@@ -6,19 +6,18 @@ export default async function handler(req, res) {
 
             success: false,
 
-            error:
-                "Method not allowed"
+            error: "Method not allowed."
 
         });
 
     }
 
 
-    const appsScriptUrl =
+    const APPS_SCRIPT_URL =
         process.env.APPS_SCRIPT_URL;
 
 
-    if (!appsScriptUrl) {
+    if (!APPS_SCRIPT_URL) {
 
         return res.status(500).json({
 
@@ -34,39 +33,23 @@ export default async function handler(req, res) {
 
     try {
 
-        const body =
-            typeof req.body === "string"
-                ? JSON.parse(req.body)
-                : req.body;
-
-
-        if (!body) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                error:
-                    "No form data received."
-
-            });
-
-        }
-
-
         const response =
             await fetch(
-                appsScriptUrl,
+                APPS_SCRIPT_URL,
                 {
+
                     method: "POST",
 
                     headers: {
+
                         "Content-Type":
-                            "application/json"
+                            "text/plain;charset=utf-8"
+
                     },
 
                     body:
-                        JSON.stringify(body)
+                        JSON.stringify(req.body)
+
                 }
             );
 
@@ -75,56 +58,24 @@ export default async function handler(req, res) {
             await response.text();
 
 
-        let result;
-
-
-        try {
-
-            result =
-                JSON.parse(text);
-
-        } catch {
-
-            result = {
-
-                success: false,
-
-                error:
-                    "Invalid response from Google Apps Script."
-
-            };
-
-        }
-
-
-        if (!result.success) {
-
-            return res.status(400).json(
-                result
-            );
-
-        }
+        const data =
+            JSON.parse(text);
 
 
         return res.status(200).json(
-            result
+            data
         );
 
+    }
 
-    } catch (error) {
-
-        console.error(
-            "Submission error:",
-            error
-        );
-
+    catch (error) {
 
         return res.status(500).json({
 
             success: false,
 
             error:
-                "Unable to submit home visit."
+                error.message
 
         });
 

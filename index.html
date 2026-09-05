@@ -10,13 +10,11 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>
-        Home Visiting Form
-    </title>
+    <title>Home Visit Form</title>
 
     <link
         rel="stylesheet"
-        href="/style.css"
+        href="style.css"
     >
 
 </head>
@@ -25,21 +23,13 @@
 
 <div class="container">
 
-    <header class="header">
+    <header>
 
-        <div>
-            <h1>
-                Home Visiting Form
-            </h1>
+        <h1>Home Visit Form</h1>
 
-            <p>
-                Details of Homely Activities of Students: 2082
-            </p>
-        </div>
-
-        <div class="school-badge">
-            School
-        </div>
+        <p>
+            Details of Homely Activities of Students
+        </p>
 
     </header>
 
@@ -51,11 +41,9 @@
         <!-- VISIT INFORMATION -->
         <!-- ================================= -->
 
-        <section class="form-section">
+        <section>
 
-            <h2>
-                Visit Information
-            </h2>
+            <h2>Visit Information</h2>
 
             <div class="grid">
 
@@ -77,14 +65,14 @@
                 <div class="field">
 
                     <label>
-                        Teacher Name
+                        Teacher Name *
                     </label>
 
                     <input
                         type="text"
                         id="teacherName"
                         name="teacherName"
-                        placeholder="Enter teacher name"
+                        required
                     >
 
                 </div>
@@ -99,16 +87,13 @@
         <!-- STUDENT INFORMATION -->
         <!-- ================================= -->
 
-        <section class="form-section">
+        <section>
 
-            <h2>
-                Student Information
-            </h2>
-
+            <h2>Student Information</h2>
 
             <div class="grid">
 
-                <div class="field">
+                <div class="field full">
 
                     <label>
                         Student Name *
@@ -170,15 +155,15 @@
                 <div class="field">
 
                     <label>
-                        Roll No. *
+                        Roll No *
                     </label>
 
                     <input
                         type="number"
                         id="rollNo"
                         name="rollNo"
-                        min="1"
                         required
+                        min="1"
                     >
 
                 </div>
@@ -208,7 +193,6 @@
 
                     <input
                         type="text"
-                        id="fatherName"
                         name="fatherName"
                     >
 
@@ -223,7 +207,6 @@
 
                     <input
                         type="text"
-                        id="motherName"
                         name="motherName"
                     >
 
@@ -238,24 +221,8 @@
 
                     <input
                         type="text"
-                        id="occupation"
                         name="occupation"
                     >
-
-                </div>
-
-
-                <div class="field full">
-
-                    <label>
-                        Address
-                    </label>
-
-                    <textarea
-                        id="address"
-                        name="address"
-                        rows="2"
-                    ></textarea>
 
                 </div>
 
@@ -268,11 +235,78 @@
 
                     <input
                         type="tel"
-                        id="contact"
                         name="contact"
                     >
 
                 </div>
+
+
+                <div class="field full">
+
+                    <label>
+                        Address
+                    </label>
+
+                    <textarea
+                        name="address"
+                        rows="3"
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================================= -->
+        <!-- PHOTO -->
+        <!-- ================================= -->
+
+        <section>
+
+            <h2>Student Photo</h2>
+
+            <div class="photo-area">
+
+                <div
+                    id="photoPreview"
+                    class="photo-preview"
+                >
+
+                    <span>
+                        No photo selected
+                    </span>
+
+                </div>
+
+
+                <label
+                    class="photo-button"
+                    for="studentPhoto"
+                >
+
+                    📷 Take / Select Photo
+
+                </label>
+
+
+                <input
+                    type="file"
+                    id="studentPhoto"
+                    accept="image/*"
+                    capture="environment"
+                    hidden
+                >
+
+                <button
+                    type="button"
+                    id="removePhoto"
+                    class="remove-button hidden"
+                >
+                    Remove Photo
+                </button>
 
             </div>
 
@@ -284,401 +318,203 @@
         <!-- STUDENT ACTIVITIES -->
         <!-- ================================= -->
 
-        <section class="form-section">
+        <section>
 
-            <h2>
-                Information of the Student
-            </h2>
+            <h2>Student Activities</h2>
 
 
             <div class="field">
 
                 <label>
-                    i. He/She does read homework in
-                </label>
-
-                <input
-                    type="text"
-                    id="readingHomework"
-                    name="readingHomework"
-                    placeholder="Where does the student read homework?"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    ii. He/She does write homework in
-                </label>
-
-                <input
-                    type="text"
-                    id="writingHomework"
-                    name="writingHomework"
-                    placeholder="Where does the student write homework?"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    iii. He/She is much interested in
-                </label>
-
-                <input
-                    type="text"
-                    id="interestedIn"
-                    name="interestedIn"
-                >
-
-            </div>
-
-
-            <!-- QUESTION -->
-
-            <div class="question">
-
-                <label>
-                    iv. How does he/she behave with family members?
-                </label>
-
-                <div class="options">
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="familyBehaviour"
-                            value="Good"
-                        >
-                        Good
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="familyBehaviour"
-                            value="Average"
-                        >
-                        Average
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="familyBehaviour"
-                            value="Bad"
-                        >
-                        Bad
-                    </label>
-
-                </div>
-
-            </div>
-
-
-            <div class="question">
-
-                <label>
-                    v. How does he/she respond to the guest?
-                </label>
-
-                <div class="options">
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="guestResponse"
-                            value="Properly"
-                        >
-                        Properly
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="guestResponse"
-                            value="Average"
-                        >
-                        Average
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="guestResponse"
-                            value="Coldly"
-                        >
-                        Coldly
-                    </label>
-
-                </div>
-
-            </div>
-
-
-            <div class="question">
-
-                <label>
-                    vi. Does he/she keep the things in original place?
-                </label>
-
-                <div class="options">
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="keepThings"
-                            value="Often"
-                        >
-                        Often
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="keepThings"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="keepThings"
-                            value="Never"
-                        >
-                        Never
-                    </label>
-
-                </div>
-
-            </div>
-
-
-            <div class="question">
-
-                <label>
-                    vii. Does he/she eat junk food?
-                </label>
-
-                <div class="options">
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="junkFood"
-                            value="Often"
-                        >
-                        Often
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="junkFood"
-                            value="Commonly"
-                        >
-                        Commonly
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="junkFood"
-                            value="Hardly"
-                        >
-                        Hardly
-                    </label>
-
-                </div>
-
-            </div>
-
-
-            <div class="question">
-
-                <label>
-                    viii. How does he/she use mobile/laptop?
-                </label>
-
-                <div class="options">
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="mobileLaptop"
-                            value="Properly"
-                        >
-                        Properly
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="mobileLaptop"
-                            value="Commonly"
-                        >
-                        Commonly
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="mobileLaptop"
-                            value="Too much"
-                        >
-                        Too much
-                    </label>
-
-                </div>
-
-            </div>
-
-
-            <div class="question">
-
-                <label>
-                    ix. How often he/she watch TV?
-                </label>
-
-                <div class="options">
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="tvWatching"
-                            value="Sometimes only"
-                        >
-                        Sometimes only
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="tvWatching"
-                            value="Commonly"
-                        >
-                        Commonly
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="tvWatching"
-                            value="Too much"
-                        >
-                        Too much
-                    </label>
-
-                </div>
-
-            </div>
-
-
-            <div class="question">
-
-                <label>
-                    x. Does he/she assist in household activities?
-                </label>
-
-                <div class="options">
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="householdActivities"
-                            value="Often"
-                        >
-                        Often
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="householdActivities"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="householdActivities"
-                            value="Never"
-                        >
-                        Never
-                    </label>
-
-                </div>
-
-            </div>
-
-
-            <div class="question">
-
-                <label>
-                    xi. Does he/she wash personal clothes/dishes?
-                </label>
-
-                <div class="options">
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="personalClothes"
-                            value="Often"
-                        >
-                        Often
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="personalClothes"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="personalClothes"
-                            value="Hardly"
-                        >
-                        Hardly
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="personalClothes"
-                            value="Never"
-                        >
-                        Never
-                    </label>
-
-                </div>
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    xii. What does he/she say about school, teacher or friends?
+                    Where does the student do reading homework?
                 </label>
 
                 <textarea
-                    id="schoolOpinion"
+                    name="readingHomework"
+                    rows="2"
+                ></textarea>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Where does the student do writing homework?
+                </label>
+
+                <textarea
+                    name="writingHomework"
+                    rows="2"
+                ></textarea>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    What is the student interested in?
+                </label>
+
+                <textarea
+                    name="interestedIn"
+                    rows="2"
+                ></textarea>
+
+            </div>
+
+
+            <div class="question">
+
+                <label>
+                    Behaviour with family
+                </label>
+
+                <textarea
+                    name="familyBehaviour"
+                    rows="2"
+                ></textarea>
+
+            </div>
+
+
+            <div class="question">
+
+                <label>
+                    Response to guests
+                </label>
+
+                <textarea
+                    name="guestResponse"
+                    rows="2"
+                ></textarea>
+
+            </div>
+
+
+            <div class="question">
+
+                <label>
+                    Does the student keep things in their original place?
+                </label>
+
+                <select name="keepThings">
+
+                    <option value="">
+                        Select
+                    </option>
+
+                    <option>Yes</option>
+                    <option>No</option>
+                    <option>Sometimes</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="question">
+
+                <label>
+                    Does the student eat junk food?
+                </label>
+
+                <select name="junkFood">
+
+                    <option value="">
+                        Select
+                    </option>
+
+                    <option>Yes</option>
+                    <option>No</option>
+                    <option>Sometimes</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="question">
+
+                <label>
+                    Mobile / Laptop Usage
+                </label>
+
+                <textarea
+                    name="mobileLaptop"
+                    rows="2"
+                ></textarea>
+
+            </div>
+
+
+            <div class="question">
+
+                <label>
+                    TV Watching
+                </label>
+
+                <textarea
+                    name="tvWatching"
+                    rows="2"
+                ></textarea>
+
+            </div>
+
+
+            <div class="question">
+
+                <label>
+                    Does the student assist in household activities?
+                </label>
+
+                <select name="householdActivities">
+
+                    <option value="">
+                        Select
+                    </option>
+
+                    <option>Yes</option>
+                    <option>No</option>
+                    <option>Sometimes</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="question">
+
+                <label>
+                    Does the student wash personal clothes/dishes?
+                </label>
+
+                <select name="personalClothes">
+
+                    <option value="">
+                        Select
+                    </option>
+
+                    <option>Yes</option>
+                    <option>No</option>
+                    <option>Sometimes</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="question">
+
+                <label>
+                    What does the student say about school,
+                    teachers and friends?
+                </label>
+
+                <textarea
                     name="schoolOpinion"
-                    rows="4"
+                    rows="3"
                 ></textarea>
 
             </div>
@@ -688,52 +524,31 @@
 
 
         <!-- ================================= -->
-        <!-- GUARDIAN INFORMATION -->
+        <!-- GUARDIAN -->
         <!-- ================================= -->
 
-        <section class="form-section">
+        <section>
 
-            <h2>
-                Information of the Guardians
-            </h2>
+            <h2>Guardian Information</h2>
 
 
             <div class="question">
 
                 <label>
-                    i. Do you appreciate your child?
+                    Does the guardian appreciate the child?
                 </label>
 
-                <div class="options">
+                <select name="guardianAppreciates">
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianAppreciates"
-                            value="Always"
-                        >
-                        Always
-                    </label>
+                    <option value="">
+                        Select
+                    </option>
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianAppreciates"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
+                    <option>Yes</option>
+                    <option>No</option>
+                    <option>Sometimes</option>
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianAppreciates"
-                            value="Never"
-                        >
-                        Never
-                    </label>
-
-                </div>
+                </select>
 
             </div>
 
@@ -741,39 +556,21 @@
             <div class="question">
 
                 <label>
-                    ii. Do you involve him/her in some social activities?
+                    Does the guardian involve the child
+                    in social activities?
                 </label>
 
-                <div class="options">
+                <select name="guardianSocialActivities">
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianSocialActivities"
-                            value="Often"
-                        >
-                        Often
-                    </label>
+                    <option value="">
+                        Select
+                    </option>
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianSocialActivities"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
+                    <option>Yes</option>
+                    <option>No</option>
+                    <option>Sometimes</option>
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianSocialActivities"
-                            value="Never"
-                        >
-                        Never
-                    </label>
-
-                </div>
+                </select>
 
             </div>
 
@@ -781,39 +578,21 @@
             <div class="question">
 
                 <label>
-                    iii. Do you keep him/her informed about the general happening of the family?
+                    Does the guardian keep the child informed
+                    about family matters?
                 </label>
 
-                <div class="options">
+                <select name="guardianFamilyInformation">
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianFamilyInformation"
-                            value="Often"
-                        >
-                        Often
-                    </label>
+                    <option value="">
+                        Select
+                    </option>
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianFamilyInformation"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
+                    <option>Yes</option>
+                    <option>No</option>
+                    <option>Sometimes</option>
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianFamilyInformation"
-                            value="Never"
-                        >
-                        Never
-                    </label>
-
-                </div>
+                </select>
 
             </div>
 
@@ -821,48 +600,20 @@
             <div class="question">
 
                 <label>
-                    iv. Do you allocate time to observe their activities/listen to them or travel with them?
+                    Does the guardian give time to the child?
                 </label>
 
-                <div class="options">
+                <select name="guardianTime">
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianTime"
-                            value="Often"
-                        >
-                        Often
-                    </label>
+                    <option value="">
+                        Select
+                    </option>
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianTime"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
+                    <option>Yes</option>
+                    <option>No</option>
+                    <option>Sometimes</option>
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianTime"
-                            value="Hardly"
-                        >
-                        Hardly
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianTime"
-                            value="Never"
-                        >
-                        Never
-                    </label>
-
-                </div>
+                </select>
 
             </div>
 
@@ -870,39 +621,20 @@
             <div class="question">
 
                 <label>
-                    v. Do you attend school's guardians programs?
+                    Does the guardian attend guardian programs?
                 </label>
 
-                <div class="options">
+                <select name="guardianPrograms">
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianPrograms"
-                            value="Often"
-                        >
-                        Often
-                    </label>
+                    <option value="">
+                        Select
+                    </option>
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianPrograms"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
+                    <option>Yes</option>
+                    <option>No</option>
+                    <option>Sometimes</option>
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianPrograms"
-                            value="Hardly"
-                        >
-                        Hardly
-                    </label>
-
-                </div>
+                </select>
 
             </div>
 
@@ -910,48 +642,21 @@
             <div class="question">
 
                 <label>
-                    vi. Do you encourage your child ignoring their simple mistakes?
+                    Does the guardian encourage the child
+                    despite simple mistakes?
                 </label>
 
-                <div class="options">
+                <select name="guardianMistakes">
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianMistakes"
-                            value="Often"
-                        >
-                        Often
-                    </label>
+                    <option value="">
+                        Select
+                    </option>
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianMistakes"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
+                    <option>Yes</option>
+                    <option>No</option>
+                    <option>Sometimes</option>
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianMistakes"
-                            value="Hardly"
-                        >
-                        Hardly
-                    </label>
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="guardianMistakes"
-                            value="Never"
-                        >
-                        Never
-                    </label>
-
-                </div>
+                </select>
 
             </div>
 
@@ -963,39 +668,38 @@
         <!-- NEW STUDENT -->
         <!-- ================================= -->
 
-        <section class="form-section">
+        <section>
 
-            <h2>
-                New Student Information
-            </h2>
+            <h2>New Student Information</h2>
 
+            <div class="grid">
 
-            <div class="field">
+                <div class="field">
 
-                <label>
-                    Name
-                </label>
+                    <label>
+                        New Student Name
+                    </label>
 
-                <input
-                    type="text"
-                    id="newStudentName"
-                    name="newStudentName"
-                >
+                    <input
+                        type="text"
+                        name="newStudentName"
+                    >
 
-            </div>
+                </div>
 
 
-            <div class="field">
+                <div class="field">
 
-                <label>
-                    Address
-                </label>
+                    <label>
+                        New Student Address
+                    </label>
 
-                <textarea
-                    id="newStudentAddress"
-                    name="newStudentAddress"
-                    rows="3"
-                ></textarea>
+                    <input
+                        type="text"
+                        name="newStudentAddress"
+                    >
+
+                </div>
 
             </div>
 
@@ -1007,17 +711,14 @@
         <!-- REMARKS -->
         <!-- ================================= -->
 
-        <section class="form-section">
+        <section>
 
-            <h2>
-                Additional Remarks
-            </h2>
+            <h2>Remarks</h2>
 
             <textarea
-                id="remarks"
                 name="remarks"
-                rows="4"
-                placeholder="Additional notes..."
+                rows="5"
+                placeholder="Enter additional remarks..."
             ></textarea>
 
         </section>
@@ -1028,21 +729,21 @@
         <!-- SUBMIT -->
         <!-- ================================= -->
 
-        <div class="submit-area">
+        <button
+            type="submit"
+            id="submitButton"
+            class="submit-button"
+        >
 
-            <button
-                type="submit"
-                id="submitButton"
-            >
-                Submit Home Visit
-            </button>
+            Submit Home Visit
 
-            <div
-                id="status"
-                class="status"
-            ></div>
+        </button>
 
-        </div>
+
+        <div
+            id="message"
+            class="message"
+        ></div>
 
 
     </form>
@@ -1050,7 +751,7 @@
 </div>
 
 
-<script src="/app.js"></script>
+<script src="script.js"></script>
 
 </body>
 

@@ -1,28 +1,13 @@
 export default async function handler(req, res) {
 
-    if (req.method !== "GET") {
-
-        return res.status(405).json({
-            success: false,
-            error: "Method not allowed"
-        });
-
-    }
-
-
-    const appsScriptUrl =
+    const APPS_SCRIPT_URL =
         process.env.APPS_SCRIPT_URL;
 
-
-    if (!appsScriptUrl) {
+    if (!APPS_SCRIPT_URL) {
 
         return res.status(500).json({
-
             success: false,
-
-            error:
-                "APPS_SCRIPT_URL is not configured."
-
+            error: "APPS_SCRIPT_URL is not configured."
         });
 
     }
@@ -30,21 +15,10 @@ export default async function handler(req, res) {
 
     try {
 
-        const url =
-            `${appsScriptUrl}?action=config`;
-
-
         const response =
-            await fetch(url);
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                `Google Apps Script returned ${response.status}`
+            await fetch(
+                `${APPS_SCRIPT_URL}?action=config`
             );
-
-        }
 
 
         const data =
@@ -55,21 +29,16 @@ export default async function handler(req, res) {
             data
         );
 
+    }
 
-    } catch (error) {
-
-        console.error(
-            "Configuration error:",
-            error
-        );
-
+    catch (error) {
 
         return res.status(500).json({
 
             success: false,
 
             error:
-                "Unable to retrieve school configuration."
+                error.message
 
         });
 
