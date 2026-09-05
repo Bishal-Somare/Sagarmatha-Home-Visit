@@ -4,7 +4,6 @@
 
 
 body {
-
     margin: 0;
 
     font-family:
@@ -15,12 +14,10 @@ body {
     background: #f3f5f7;
 
     color: #222;
-
 }
 
 
 .container {
-
     width: min(
         1000px,
         94%
@@ -29,12 +26,10 @@ body {
     margin:
         30px auto
         60px;
-
 }
 
 
 header {
-
     background: white;
 
     padding: 30px;
@@ -48,29 +43,23 @@ header {
     box-shadow:
         0 4px 20px
         rgba(0,0,0,.06);
-
 }
 
 
 header h1 {
-
     margin:
         0 0 8px;
-
 }
 
 
 header p {
-
     margin: 0;
 
     color: #666;
-
 }
 
 
 section {
-
     background: white;
 
     padding: 25px;
@@ -82,63 +71,54 @@ section {
     box-shadow:
         0 4px 20px
         rgba(0,0,0,.05);
-
 }
 
 
 section h2 {
-
     margin-top: 0;
 
     margin-bottom: 20px;
 
     font-size: 20px;
-
 }
 
 
 .grid {
-
     display: grid;
 
     grid-template-columns:
         1fr 1fr;
 
     gap: 18px;
-
 }
 
 
 .field {
-
-    margin-bottom: 18px;
-
+    margin-bottom: 20px;
 }
 
 
 .full {
-
     grid-column:
         1 / -1;
-
 }
 
 
 label {
-
     display: block;
 
     margin-bottom: 7px;
 
     font-weight: 600;
-
 }
 
 
-input,
+input[type="text"],
+input[type="number"],
+input[type="tel"],
+input[type="date"],
 select,
 textarea {
-
     width: 100%;
 
     padding:
@@ -154,53 +134,43 @@ textarea {
     outline: none;
 
     background: white;
-
 }
 
 
 input:focus,
 select:focus,
 textarea:focus {
-
     border-color: #555;
-
 }
 
 
 textarea {
-
     resize: vertical;
-
 }
 
 
-/****************************************************
- * RADIO BUTTONS
- ****************************************************/
+/* RADIO BUTTONS */
 
 .radio-group {
-
     display: flex;
 
     flex-wrap: wrap;
 
-    gap: 12px;
+    gap: 10px;
 
     margin-top: 8px;
-
 }
 
 
 .radio-option {
-
     display: flex;
 
     align-items: center;
 
-    gap: 8px;
+    gap: 7px;
 
     padding:
-        11px 16px;
+        10px 15px;
 
     border:
         1px solid #d3d7dc;
@@ -209,48 +179,25 @@ textarea {
 
     cursor: pointer;
 
-    background: #fff;
-
     font-weight: normal;
 
-    transition:
-        background .2s ease,
-        border-color .2s ease;
-
+    background: #fafafa;
 }
 
 
 .radio-option:hover {
-
-    background: #f5f5f5;
-
+    background: #f0f0f0;
 }
 
 
 .radio-option input {
-
     width: auto;
 
     margin: 0;
-
-    cursor: pointer;
-
 }
 
-
-.radio-option span {
-
-    font-weight: 500;
-
-}
-
-
-/****************************************************
- * SUBMIT BUTTON
- ****************************************************/
 
 .submit-button {
-
     width: 100%;
 
     padding: 16px;
@@ -268,25 +215,22 @@ textarea {
     font-weight: bold;
 
     cursor: pointer;
+}
 
+
+.submit-button:hover {
+    background: #333;
 }
 
 
 .submit-button:disabled {
-
     opacity: .6;
 
     cursor: not-allowed;
-
 }
 
 
-/****************************************************
- * MESSAGE
- ****************************************************/
-
 .message {
-
     margin-top: 15px;
 
     padding: 14px;
@@ -294,104 +238,73 @@ textarea {
     border-radius: 9px;
 
     display: none;
-
 }
 
 
 .message.success {
-
     display: block;
 
     background: #e8f7e8;
 
     color: #176b17;
-
 }
 
 
 .message.error {
-
     display: block;
 
     background: #fdeaea;
 
     color: #a00000;
-
 }
 
 
-/****************************************************
- * FOOTER
- ****************************************************/
-
 footer {
-
     text-align: center;
 
-    margin-top: 25px;
+    margin-top: 30px;
 
     color: #666;
 
     font-size: 14px;
-
-    padding: 10px;
-
 }
 
-
-/****************************************************
- * MOBILE
- ****************************************************/
 
 @media (
     max-width: 700px
 ) {
 
     .grid {
-
         grid-template-columns:
             1fr;
-
     }
 
 
     .full {
-
         grid-column:
             auto;
-
     }
 
 
     section {
-
         padding: 18px;
-
     }
 
 
     .container {
-
         width: 96%;
 
         margin-top: 12px;
-
     }
 
 
     .radio-group {
-
         flex-direction: column;
-
-        gap: 8px;
-
     }
 
 
     .radio-option {
-
         width: 100%;
-
     }
 
 }

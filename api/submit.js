@@ -47,6 +47,9 @@ export default async function handler(
                     method:
                         "POST",
 
+                    redirect:
+                        "follow",
+
                     headers: {
 
                         "Content-Type":
@@ -87,23 +90,34 @@ export default async function handler(
 
         catch {
 
-            throw new Error(
-                "Apps Script did not return valid JSON."
-            );
+            return res.status(502).json({
+
+                success: false,
+
+                error:
+                    "Apps Script did not return valid JSON.",
+
+                responsePreview:
+                    text.substring(
+                        0,
+                        1000
+                    )
+
+            });
 
         }
 
 
-        return res
-            .status(200)
-            .json(data);
+        return res.status(200).json(
+            data
+        );
 
     }
-
 
     catch (error) {
 
         console.error(
+            "Submit error:",
             error
         );
 
@@ -118,5 +132,4 @@ export default async function handler(
         });
 
     }
-
 }

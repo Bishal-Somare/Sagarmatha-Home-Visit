@@ -37,52 +37,92 @@ let configuration = {};
 
 async function loadConfiguration() {
 
+    classSelect.disabled = true;
+
+    sectionSelect.disabled = true;
+
+    classSelect.innerHTML = `
+        <option value="">
+            Loading classes...
+        </option>
+    `;
+
+    sectionSelect.innerHTML = `
+        <option value="">
+            Select Section
+        </option>
+    `;
+
+
     try {
-
-        classSelect.disabled =
-            true;
-
-
-        sectionSelect.disabled =
-            true;
-
-
-        classSelect.innerHTML = `
-            <option value="">
-                Loading classes...
-            </option>
-        `;
-
 
         const response =
             await fetch(
                 "/api/config",
                 {
-                    cache: "no-store"
+                    method: "GET",
+
+                    cache: "no-store",
+
+                    headers: {
+                        "Accept":
+                            "application/json"
+                    }
                 }
             );
 
 
-        if (!response.ok) {
+        const text =
+            await response.text();
+
+
+        console.log(
+            "Config HTTP status:",
+            response.status
+        );
+
+
+        console.log(
+            "Config response:",
+            text
+        );
+
+
+        let result;
+
+
+        try {
+
+            result =
+                JSON.parse(text);
+
+        }
+
+        catch (error) {
 
             throw new Error(
-                "Unable to connect to server."
+                "Configuration server returned invalid JSON: " +
+                text.substring(0, 300)
             );
 
         }
 
 
-        const result =
-            await response.json();
+        if (
+            !response.ok
+        ) {
+
+            throw new Error(
+                result.error ||
+                `Configuration request failed (${response.status}).`
+            );
+
+        }
 
 
-        console.log(
-            "Configuration:",
-            result
-        );
-
-
-        if (!result.success) {
+        if (
+            !result.success
+        ) {
 
             throw new Error(
                 result.error ||
@@ -107,7 +147,7 @@ async function loadConfiguration() {
         ) {
 
             throw new Error(
-                "No classes found in Configuration sheet."
+                "No classes found in the Configuration sheet."
             );
 
         }
@@ -121,21 +161,45 @@ async function loadConfiguration() {
         classSelect.disabled =
             false;
 
-    }
 
+        clearMessage();
+
+
+        console.log(
+            "Classes loaded:",
+            configuration
+        );
+
+    }
 
     catch (error) {
 
         console.error(
+            "Configuration error:",
             error
         );
 
 
         classSelect.innerHTML = `
             <option value="">
-                Failed to load classes
+                Unable to load classes
             </option>
         `;
+
+
+        sectionSelect.innerHTML = `
+            <option value="">
+                Unable to load sections
+            </option>
+        `;
+
+
+        classSelect.disabled =
+            true;
+
+
+        sectionSelect.disabled =
+            true;
 
 
         showMessage(
@@ -144,7 +208,6 @@ async function loadConfiguration() {
         );
 
     }
-
 }
 
 
@@ -251,13 +314,12 @@ function populateClasses(
     `;
 
 
-    const sortedClasses =
-        sortClasses(
-            classes
-        );
+    sortClasses(
+        classes
+    );
 
 
-    sortedClasses.forEach(
+    classes.forEach(
         className => {
 
             const option =
@@ -288,7 +350,6 @@ function populateClasses(
 
         }
     );
-
 }
 
 
@@ -315,7 +376,9 @@ classSelect.addEventListener(
             true;
 
 
-        if (!selectedClass) {
+        if (
+            !selectedClass
+        ) {
 
             return;
 
@@ -341,10 +404,10 @@ classSelect.addEventListener(
 
 
         if (
-            !sections ||
             !Array.isArray(
                 sections
-            )
+            ) ||
+            sections.length === 0
         ) {
 
             showMessage(
@@ -375,10 +438,9 @@ classSelect.addEventListener(
                     section;
 
 
-                sectionSelect
-                    .appendChild(
-                        option
-                    );
+                sectionSelect.appendChild(
+                    option
+                );
 
             }
         );
@@ -386,6 +448,9 @@ classSelect.addEventListener(
 
         sectionSelect.disabled =
             false;
+
+
+        clearMessage();
 
     }
 );
@@ -411,7 +476,6 @@ form.addEventListener(
                 "error"
             );
 
-
             return;
 
         }
@@ -425,7 +489,6 @@ form.addEventListener(
                 "Please select a section.",
                 "error"
             );
-
 
             return;
 
@@ -464,16 +527,8 @@ form.addEventListener(
             );
 
 
-            data.className =
-                classSelect.value;
-
-
-            data.section =
-                sectionSelect.value;
-
-
             console.log(
-                "Submitting:",
+                "Submitting data:",
                 data
             );
 
@@ -489,6 +544,9 @@ form.addEventListener(
                         headers: {
 
                             "Content-Type":
+                                "application/json",
+
+                            "Accept":
                                 "application/json"
 
                         },
@@ -502,8 +560,30 @@ form.addEventListener(
                 );
 
 
-            const result =
-                await response.json();
+            const text =
+                await response.text();
+
+
+            let result;
+
+
+            try {
+
+                result =
+                    JSON.parse(
+                        text
+                    );
+
+            }
+
+            catch {
+
+                throw new Error(
+                    "Server returned invalid JSON: " +
+                    text.substring(0, 300)
+                );
+
+            }
 
 
             console.log(
@@ -513,6 +593,7 @@ form.addEventListener(
 
 
             if (
+                !response.ok ||
                 !result.success
             ) {
 
@@ -544,19 +625,17 @@ form.addEventListener(
                 true;
 
 
-            window.scrollTo(
-                {
-                    top: 0,
-                    behavior: "smooth"
-                }
-            );
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
 
         }
-
 
         catch (error) {
 
             console.error(
+                "Submission error:",
                 error
             );
 
@@ -567,7 +646,6 @@ form.addEventListener(
             );
 
         }
-
 
         finally {
 
@@ -603,8 +681,20 @@ function showMessage(
 }
 
 
+function clearMessage() {
+
+    message.textContent =
+        "";
+
+
+    message.className =
+        "message";
+
+}
+
+
 /****************************************************
- * START APPLICATION
+ * START
  ****************************************************/
 
 loadConfiguration();
