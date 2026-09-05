@@ -1,26 +1,49 @@
 const form =
-    document.getElementById("homeVisitForm");
+    document.getElementById(
+        "homeVisitForm"
+    );
+
 
 const classSelect =
-    document.getElementById("className");
+    document.getElementById(
+        "className"
+    );
+
 
 const sectionSelect =
-    document.getElementById("section");
+    document.getElementById(
+        "section"
+    );
+
 
 const photoInput =
-    document.getElementById("studentPhoto");
+    document.getElementById(
+        "studentPhoto"
+    );
+
 
 const photoPreview =
-    document.getElementById("photoPreview");
+    document.getElementById(
+        "photoPreview"
+    );
+
 
 const removePhoto =
-    document.getElementById("removePhoto");
+    document.getElementById(
+        "removePhoto"
+    );
+
 
 const submitButton =
-    document.getElementById("submitButton");
+    document.getElementById(
+        "submitButton"
+    );
+
 
 const message =
-    document.getElementById("message");
+    document.getElementById(
+        "message"
+    );
 
 
 let configuration = {};
@@ -28,36 +51,111 @@ let configuration = {};
 let compressedPhoto = null;
 
 
-/*
-====================================================
-LOAD CONFIGURATION
-====================================================
-*/
+/****************************************************
+ * LOAD CONFIGURATION
+ ****************************************************/
 
 async function loadConfiguration() {
 
     try {
 
+        classSelect.disabled =
+            true;
+
+
+        sectionSelect.disabled =
+            true;
+
+
+        classSelect.innerHTML = `
+            <option value="">
+                Loading classes...
+            </option>
+        `;
+
+
         const response =
-            await fetch("/api/config");
+            await fetch(
+                "/api/config",
+                {
+                    cache: "no-store"
+                }
+            );
+
 
         if (!response.ok) {
 
             throw new Error(
-                "Unable to load class configuration."
+                "Unable to connect to server."
             );
 
         }
 
-        configuration =
+
+        const result =
             await response.json();
 
 
-        populateClasses();
+        console.log(
+            "Configuration:",
+            result
+        );
+
+
+        if (!result.success) {
+
+            throw new Error(
+                result.error ||
+                "Unable to load configuration."
+            );
+
+        }
+
+
+        configuration =
+            result.classes || {};
+
+
+        const classes =
+            Object.keys(
+                configuration
+            );
+
+
+        if (
+            classes.length === 0
+        ) {
+
+            throw new Error(
+                "No classes found in Configuration sheet."
+            );
+
+        }
+
+
+        populateClasses(
+            classes
+        );
+
+
+        classSelect.disabled =
+            false;
 
     }
 
     catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        classSelect.innerHTML = `
+            <option value="">
+                Failed to load classes
+            </option>
+        `;
+
 
         showMessage(
             error.message,
@@ -69,13 +167,101 @@ async function loadConfiguration() {
 }
 
 
-/*
-====================================================
-POPULATE CLASS
-====================================================
-*/
+/****************************************************
+ * SORT CLASSES
+ ****************************************************/
 
-function populateClasses() {
+function sortClasses(
+    classes
+) {
+
+    const special = [
+        "Nursery",
+        "LKG",
+        "UKG"
+    ];
+
+
+    return classes.sort(
+        (a, b) => {
+
+            const aSpecial =
+                special.indexOf(a);
+
+
+            const bSpecial =
+                special.indexOf(b);
+
+
+            if (
+                aSpecial !== -1 &&
+                bSpecial !== -1
+            ) {
+
+                return (
+                    aSpecial -
+                    bSpecial
+                );
+
+            }
+
+
+            if (
+                aSpecial !== -1
+            ) {
+
+                return -1;
+
+            }
+
+
+            if (
+                bSpecial !== -1
+            ) {
+
+                return 1;
+
+            }
+
+
+            const aNumber =
+                Number(a);
+
+
+            const bNumber =
+                Number(b);
+
+
+            if (
+                !Number.isNaN(aNumber) &&
+                !Number.isNaN(bNumber)
+            ) {
+
+                return (
+                    aNumber -
+                    bNumber
+                );
+
+            }
+
+
+            return a.localeCompare(
+                b
+            );
+
+        }
+    );
+
+}
+
+
+/****************************************************
+ * POPULATE CLASSES
+ ****************************************************/
+
+function populateClasses(
+    classes
+) {
 
     classSelect.innerHTML = `
         <option value="">
@@ -84,43 +270,56 @@ function populateClasses() {
     `;
 
 
-    Object.keys(configuration)
-        .forEach(className => {
+    sortClasses(
+        classes
+    );
+
+
+    classes.forEach(
+        className => {
 
             const option =
-                document.createElement("option");
+                document.createElement(
+                    "option"
+                );
+
 
             option.value =
                 className;
 
+
             option.textContent =
-                className === "Nursery" ||
-                className === "LKG" ||
-                className === "UKG"
+                [
+                    "Nursery",
+                    "LKG",
+                    "UKG"
+                ].includes(
+                    className
+                )
                     ? className
                     : `Class ${className}`;
+
 
             classSelect.appendChild(
                 option
             );
 
-        });
+        }
+    );
 
 }
 
 
-/*
-====================================================
-CLASS CHANGE
-====================================================
-*/
+/****************************************************
+ * CLASS CHANGED
+ ****************************************************/
 
 classSelect.addEventListener(
     "change",
-    () => {
+    function () {
 
         const selectedClass =
-            classSelect.value;
+            this.value;
 
 
         sectionSelect.innerHTML = `
@@ -131,57 +330,121 @@ classSelect.addEventListener(
 
 
         sectionSelect.disabled =
-            !selectedClass;
+            true;
 
 
         if (!selectedClass) {
+
             return;
+
         }
 
 
         const sections =
             configuration[
                 selectedClass
-            ] || [];
+            ];
 
 
-        sections.forEach(section => {
+        console.log(
+            "Selected class:",
+            selectedClass
+        );
 
-            const option =
-                document.createElement("option");
 
-            option.value =
-                section;
+        console.log(
+            "Sections:",
+            sections
+        );
 
-            option.textContent =
-                section;
 
-            sectionSelect.appendChild(
-                option
+        if (
+            !sections ||
+            !Array.isArray(
+                sections
+            )
+        ) {
+
+            showMessage(
+                "No sections configured for this class.",
+                "error"
             );
 
-        });
+
+            return;
+
+        }
+
+
+        sections.forEach(
+            section => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    section;
+
+
+                option.textContent =
+                    section;
+
+
+                sectionSelect
+                    .appendChild(
+                        option
+                    );
+
+            }
+        );
+
+
+        sectionSelect.disabled =
+            false;
 
     }
 );
 
 
-/*
-====================================================
-PHOTO SELECTION
-====================================================
-*/
+/****************************************************
+ * PHOTO
+ ****************************************************/
 
 photoInput.addEventListener(
     "change",
-    async event => {
+    async function () {
 
         const file =
-            event.target.files[0];
+            this.files[0];
 
 
         if (!file) {
+
             return;
+
+        }
+
+
+        if (
+            !file.type.startsWith(
+                "image/"
+            )
+        ) {
+
+            showMessage(
+                "Please select an image.",
+                "error"
+            );
+
+
+            this.value = "";
+
+
+            return;
+
         }
 
 
@@ -196,20 +459,28 @@ photoInput.addEventListener(
 
 
             photoPreview.innerHTML = `
+
                 <img
                     src="${compressedPhoto.base64}"
                     alt="Student Photo"
                 >
+
             `;
 
 
-            removePhoto.classList.remove(
-                "hidden"
-            );
+            removePhoto.classList
+                .remove(
+                    "hidden"
+                );
 
         }
 
         catch (error) {
+
+            console.error(
+                error
+            );
+
 
             showMessage(
                 "Unable to process photo.",
@@ -222,39 +493,43 @@ photoInput.addEventListener(
 );
 
 
-/*
-====================================================
-REMOVE PHOTO
-====================================================
-*/
+/****************************************************
+ * REMOVE PHOTO
+ ****************************************************/
 
 removePhoto.addEventListener(
     "click",
-    () => {
+    function () {
 
-        photoInput.value = "";
+        photoInput.value =
+            "";
 
-        compressedPhoto = null;
+
+        compressedPhoto =
+            null;
+
 
         photoPreview.innerHTML = `
+
             <span>
                 No photo selected
             </span>
+
         `;
 
-        removePhoto.classList.add(
-            "hidden"
-        );
+
+        removePhoto.classList
+            .add(
+                "hidden"
+            );
 
     }
 );
 
 
-/*
-====================================================
-IMAGE COMPRESSION
-====================================================
-*/
+/****************************************************
+ * COMPRESS IMAGE
+ ****************************************************/
 
 function compressImage(
     file,
@@ -272,18 +547,19 @@ function compressImage(
             reader.onload =
                 event => {
 
-                    const img =
+                    const image =
                         new Image();
 
 
-                    img.onload =
+                    image.onload =
                         () => {
 
                             let width =
-                                img.width;
+                                image.width;
+
 
                             let height =
-                                img.height;
+                                image.height;
 
 
                             if (
@@ -297,6 +573,7 @@ function compressImage(
                                         maxWidth /
                                         width
                                     );
+
 
                                 width =
                                     maxWidth;
@@ -313,18 +590,19 @@ function compressImage(
                             canvas.width =
                                 width;
 
+
                             canvas.height =
                                 height;
 
 
-                            const ctx =
+                            const context =
                                 canvas.getContext(
                                     "2d"
                                 );
 
 
-                            ctx.drawImage(
-                                img,
+                            context.drawImage(
+                                image,
                                 0,
                                 0,
                                 width,
@@ -341,12 +619,12 @@ function compressImage(
 
                             resolve({
 
-                                base64,
+                                base64:
 
-                                fileName:
-                                    file.name,
+                                    base64,
 
                                 mimeType:
+
                                     "image/jpeg"
 
                             });
@@ -354,11 +632,11 @@ function compressImage(
                         };
 
 
-                    img.onerror =
+                    image.onerror =
                         reject;
 
 
-                    img.src =
+                    image.src =
                         event.target.result;
 
                 };
@@ -378,28 +656,41 @@ function compressImage(
 }
 
 
-/*
-====================================================
-FORM SUBMIT
-====================================================
-*/
+/****************************************************
+ * FORM SUBMISSION
+ ****************************************************/
 
 form.addEventListener(
     "submit",
-    async event => {
+    async function (event) {
 
         event.preventDefault();
 
 
         if (
-            !classSelect.value ||
+            !classSelect.value
+        ) {
+
+            showMessage(
+                "Please select a class.",
+                "error"
+            );
+
+
+            return;
+
+        }
+
+
+        if (
             !sectionSelect.value
         ) {
 
             showMessage(
-                "Please select class and section.",
+                "Please select a section.",
                 "error"
             );
+
 
             return;
 
@@ -409,6 +700,7 @@ form.addEventListener(
         submitButton.disabled =
             true;
 
+
         submitButton.textContent =
             "Submitting...";
 
@@ -416,14 +708,19 @@ form.addEventListener(
         try {
 
             const formData =
-                new FormData(form);
+                new FormData(
+                    form
+                );
 
 
             const data = {};
 
 
             formData.forEach(
-                (value, key) => {
+                (
+                    value,
+                    key
+                ) => {
 
                     data[key] =
                         value;
@@ -440,7 +737,9 @@ form.addEventListener(
                 sectionSelect.value;
 
 
-            if (compressedPhoto) {
+            if (
+                compressedPhoto
+            ) {
 
                 data.photo =
                     compressedPhoto;
@@ -448,20 +747,31 @@ form.addEventListener(
             }
 
 
+            console.log(
+                "Submitting:",
+                data
+            );
+
+
             const response =
                 await fetch(
                     "/api/submit",
                     {
 
-                        method: "POST",
+                        method:
+                            "POST",
 
                         headers: {
+
                             "Content-Type":
                                 "application/json"
+
                         },
 
                         body:
-                            JSON.stringify(data)
+                            JSON.stringify(
+                                data
+                            )
 
                     }
                 );
@@ -471,7 +781,15 @@ form.addEventListener(
                 await response.json();
 
 
-            if (!result.success) {
+            console.log(
+                "Server result:",
+                result
+            );
+
+
+            if (
+                !result.success
+            ) {
 
                 throw new Error(
                     result.error ||
@@ -482,7 +800,7 @@ form.addEventListener(
 
 
             showMessage(
-                `✓ Saved successfully. Record ID: ${result.recordId}`,
+                `✓ Home visit saved successfully. Record ID: ${result.recordId}`,
                 "success"
             );
 
@@ -495,6 +813,7 @@ form.addEventListener(
                     Select Section
                 </option>
             `;
+
 
             sectionSelect.disabled =
                 true;
@@ -511,13 +830,27 @@ form.addEventListener(
             `;
 
 
-            removePhoto.classList.add(
-                "hidden"
+            removePhoto.classList
+                .add(
+                    "hidden"
+                );
+
+
+            window.scrollTo(
+                {
+                    top: 0,
+                    behavior: "smooth"
+                }
             );
 
         }
 
         catch (error) {
+
+            console.error(
+                error
+            );
+
 
             showMessage(
                 error.message,
@@ -531,6 +864,7 @@ form.addEventListener(
             submitButton.disabled =
                 false;
 
+
             submitButton.textContent =
                 "Submit Home Visit";
 
@@ -540,11 +874,9 @@ form.addEventListener(
 );
 
 
-/*
-====================================================
-MESSAGE
-====================================================
-*/
+/****************************************************
+ * MESSAGE
+ ****************************************************/
 
 function showMessage(
     text,
@@ -554,16 +886,15 @@ function showMessage(
     message.textContent =
         text;
 
+
     message.className =
         `message ${type}`;
 
 }
 
 
-/*
-====================================================
-START
-====================================================
-*/
+/****************************************************
+ * START APPLICATION
+ ****************************************************/
 
 loadConfiguration();

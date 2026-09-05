@@ -1,28 +1,66 @@
-export default async function handler(req, res) {
-
-    const APPS_SCRIPT_URL =
-        process.env.APPS_SCRIPT_URL;
-
-    if (!APPS_SCRIPT_URL) {
-
-        return res.status(500).json({
-            success: false,
-            error: "APPS_SCRIPT_URL is not configured."
-        });
-
-    }
-
+export default async function handler(
+    req,
+    res
+) {
 
     try {
 
+        const appsScriptUrl =
+            process.env.APPS_SCRIPT_URL;
+
+
+        if (!appsScriptUrl) {
+
+            return res.status(500).json({
+
+                success: false,
+
+                error:
+                    "APPS_SCRIPT_URL environment variable is missing."
+
+            });
+
+        }
+
+
         const response =
             await fetch(
-                `${APPS_SCRIPT_URL}?action=config`
+                `${appsScriptUrl}?action=config`,
+                {
+                    cache: "no-store"
+                }
             );
 
 
-        const data =
-            await response.json();
+        const text =
+            await response.text();
+
+
+        console.log(
+            "Apps Script configuration:",
+            text
+        );
+
+
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(
+                    text
+                );
+
+        }
+
+        catch {
+
+            throw new Error(
+                "Apps Script did not return valid JSON."
+            );
+
+        }
 
 
         return res.status(200).json(
@@ -32,6 +70,11 @@ export default async function handler(req, res) {
     }
 
     catch (error) {
+
+        console.error(
+            error
+        );
+
 
         return res.status(500).json({
 

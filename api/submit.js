@@ -1,30 +1,18 @@
-export default async function handler(req, res) {
+export default async function handler(
+    req,
+    res
+) {
 
-    if (req.method !== "POST") {
+    if (
+        req.method !== "POST"
+    ) {
 
         return res.status(405).json({
 
             success: false,
 
-            error: "Method not allowed."
-
-        });
-
-    }
-
-
-    const APPS_SCRIPT_URL =
-        process.env.APPS_SCRIPT_URL;
-
-
-    if (!APPS_SCRIPT_URL) {
-
-        return res.status(500).json({
-
-            success: false,
-
             error:
-                "APPS_SCRIPT_URL is not configured."
+                "Method not allowed."
 
         });
 
@@ -33,12 +21,31 @@ export default async function handler(req, res) {
 
     try {
 
+        const appsScriptUrl =
+            process.env.APPS_SCRIPT_URL;
+
+
+        if (!appsScriptUrl) {
+
+            return res.status(500).json({
+
+                success: false,
+
+                error:
+                    "APPS_SCRIPT_URL environment variable is missing."
+
+            });
+
+        }
+
+
         const response =
             await fetch(
-                APPS_SCRIPT_URL,
+                appsScriptUrl,
                 {
 
-                    method: "POST",
+                    method:
+                        "POST",
 
                     headers: {
 
@@ -48,7 +55,9 @@ export default async function handler(req, res) {
                     },
 
                     body:
-                        JSON.stringify(req.body)
+                        JSON.stringify(
+                            req.body
+                        )
 
                 }
             );
@@ -58,8 +67,31 @@ export default async function handler(req, res) {
             await response.text();
 
 
-        const data =
-            JSON.parse(text);
+        console.log(
+            "Apps Script submission:",
+            text
+        );
+
+
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(
+                    text
+                );
+
+        }
+
+        catch {
+
+            throw new Error(
+                "Apps Script did not return valid JSON."
+            );
+
+        }
 
 
         return res.status(200).json(
@@ -69,6 +101,11 @@ export default async function handler(req, res) {
     }
 
     catch (error) {
+
+        console.error(
+            error
+        );
+
 
         return res.status(500).json({
 
