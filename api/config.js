@@ -9,12 +9,10 @@ export default async function handler(req, res) {
             });
         }
 
-        const url =
-            `${appsScriptUrl}?action=config`;
+        const url = new URL(appsScriptUrl);
+        url.searchParams.set("action", "config");
 
-        console.log("Calling Apps Script:", url);
-
-        const response = await fetch(url, {
+        const response = await fetch(url.toString(), {
             method: "GET",
             redirect: "follow",
             cache: "no-store"
@@ -22,34 +20,28 @@ export default async function handler(req, res) {
 
         const text = await response.text();
 
-        console.log("Apps Script HTTP status:", response.status);
-        console.log("Apps Script content type:", response.headers.get("content-type"));
-        console.log("Apps Script response:", text);
-
-        if (!response.ok) {
-            return res.status(502).json({
-                success: false,
-                error: `Apps Script returned HTTP ${response.status}`,
-                response: text
-            });
-        }
+        console.log("Status:", response.status);
+        console.log("Final URL:", response.url);
+        console.log("Response:", text);
 
         let data;
 
         try {
             data = JSON.parse(text);
-        } catch (parseError) {
+        } catch (error) {
             return res.status(502).json({
                 success: false,
                 error: "Apps Script did not return valid JSON.",
-                responsePreview: text.substring(0, 1000)
+                status: response.status,
+                contentType: response.headers.get("content-type"),
+                responsePreview: text.substring(0, 2000)
             });
         }
 
         return res.status(200).json(data);
 
     } catch (error) {
-        console.error("Configuration error:", error);
+        console.error(error);
 
         return res.status(500).json({
             success: false,
