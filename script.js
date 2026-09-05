@@ -74,12 +74,6 @@ async function loadConfiguration() {
             await response.json();
 
 
-        console.log(
-            "Configuration:",
-            result
-        );
-
-
         if (!result.success) {
 
             throw new Error(
@@ -337,18 +331,6 @@ classSelect.addEventListener(
             ];
 
 
-        console.log(
-            "Selected Class:",
-            selectedClass
-        );
-
-
-        console.log(
-            "Sections:",
-            sections
-        );
-
-
         if (
             !sections ||
             !Array.isArray(
@@ -477,12 +459,6 @@ form.addEventListener(
                 sectionSelect.value;
 
 
-            console.log(
-                "Submitting data:",
-                data
-            );
-
-
             const response =
                 await fetch(
                     "/api/submit",
@@ -509,12 +485,6 @@ form.addEventListener(
 
             const result =
                 await response.json();
-
-
-            console.log(
-                "Server response:",
-                result
-            );
 
 
             if (
@@ -550,8 +520,11 @@ form.addEventListener(
 
 
             window.scrollTo({
+
                 top: 0,
+
                 behavior: "smooth"
+
             });
 
         }

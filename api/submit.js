@@ -67,12 +67,6 @@ export default async function handler(
             await response.text();
 
 
-        console.log(
-            "Apps Script:",
-            text
-        );
-
-
         const data =
             JSON.parse(
                 text

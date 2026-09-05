@@ -299,11 +299,17 @@ textarea {
 }
 
 
+/* ==================================================
+   CENTERED DEVELOPER CREDIT
+================================================== */
+
 footer {
+
+    width: 100%;
 
     text-align: center;
 
-    padding: 25px;
+    padding: 28px 10px;
 
     color: #666;
 
