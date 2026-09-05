@@ -32,7 +32,7 @@ export default async function handler(
                 success: false,
 
                 error:
-                    "APPS_SCRIPT_URL environment variable is missing."
+                    "APPS_SCRIPT_URL is not configured."
 
             });
 
@@ -68,35 +68,20 @@ export default async function handler(
 
 
         console.log(
-            "Apps Script submission:",
+            "Apps Script:",
             text
         );
 
 
-        let data;
-
-
-        try {
-
-            data =
-                JSON.parse(
-                    text
-                );
-
-        }
-
-        catch {
-
-            throw new Error(
-                "Apps Script did not return valid JSON."
+        const data =
+            JSON.parse(
+                text
             );
 
-        }
 
-
-        return res.status(200).json(
-            data
-        );
+        return res
+            .status(200)
+            .json(data);
 
     }
 

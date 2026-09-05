@@ -12,7 +12,7 @@ body {
         Helvetica,
         sans-serif;
 
-    background: #f3f5f7;
+    background: #f4f6f8;
 
     color: #222;
 
@@ -27,8 +27,8 @@ body {
     );
 
     margin:
-        30px auto
-        60px;
+        25px auto
+        50px;
 
 }
 
@@ -41,12 +41,12 @@ header {
 
     border-radius: 16px;
 
-    margin-bottom: 20px;
-
     text-align: center;
 
+    margin-bottom: 20px;
+
     box-shadow:
-        0 4px 20px
+        0 4px 18px
         rgba(0,0,0,.06);
 
 }
@@ -75,12 +75,12 @@ section {
 
     padding: 25px;
 
-    margin-bottom: 20px;
-
     border-radius: 16px;
 
+    margin-bottom: 20px;
+
     box-shadow:
-        0 4px 20px
+        0 4px 18px
         rgba(0,0,0,.05);
 
 }
@@ -88,9 +88,8 @@ section {
 
 section h2 {
 
-    margin-top: 0;
-
-    margin-bottom: 20px;
+    margin:
+        0 0 22px;
 
     font-size: 20px;
 
@@ -111,7 +110,7 @@ section h2 {
 
 .field {
 
-    margin-bottom: 18px;
+    margin-bottom: 20px;
 
 }
 
@@ -128,14 +127,17 @@ label {
 
     display: block;
 
-    margin-bottom: 7px;
-
     font-weight: 600;
+
+    margin-bottom: 8px;
 
 }
 
 
-input,
+input[type="text"],
+input[type="number"],
+input[type="tel"],
+input[type="date"],
 select,
 textarea {
 
@@ -145,15 +147,15 @@ textarea {
         12px 14px;
 
     border:
-        1px solid #d3d7dc;
+        1px solid #d2d6da;
 
     border-radius: 9px;
 
     font-size: 15px;
 
-    outline: none;
-
     background: white;
+
+    outline: none;
 
 }
 
@@ -162,7 +164,7 @@ input:focus,
 select:focus,
 textarea:focus {
 
-    border-color: #555;
+    border-color: #333;
 
 }
 
@@ -174,93 +176,51 @@ textarea {
 }
 
 
-.photo-area {
+/* RADIO BUTTONS */
 
-    text-align: center;
-
-}
-
-
-.photo-preview {
-
-    width: 220px;
-
-    height: 260px;
-
-    margin:
-        0 auto
-        15px;
-
-    border:
-        2px dashed #ccc;
-
-    border-radius: 12px;
+.radio-group {
 
     display: flex;
 
-    justify-content: center;
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+}
+
+
+.radio-option {
+
+    display: flex;
 
     align-items: center;
 
-    overflow: hidden;
+    gap: 7px;
+
+    padding:
+        10px 14px;
+
+    border:
+        1px solid #ddd;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-weight: normal;
 
     background: #fafafa;
 
-    color: #888;
-
 }
 
 
-.photo-preview img {
+.radio-option input {
 
-    width: 100%;
+    width: 17px;
 
-    height: 100%;
+    height: 17px;
 
-    object-fit: cover;
-
-}
-
-
-.photo-button {
-
-    display: inline-block;
-
-    padding:
-        12px 20px;
-
-    background: #222;
-
-    color: white;
-
-    border-radius: 9px;
-
-    cursor: pointer;
-
-}
-
-
-.remove-button {
-
-    margin-left: 8px;
-
-    padding:
-        12px 20px;
-
-    border: none;
-
-    border-radius: 9px;
-
-    background: #ddd;
-
-    cursor: pointer;
-
-}
-
-
-.hidden {
-
-    display: none;
+    margin: 0;
 
 }
 
@@ -269,9 +229,9 @@ textarea {
 
     width: 100%;
 
-    padding: 16px;
-
     border: none;
+
+    padding: 16px;
 
     border-radius: 10px;
 
@@ -288,9 +248,16 @@ textarea {
 }
 
 
+.submit-button:hover {
+
+    opacity: .9;
+
+}
+
+
 .submit-button:disabled {
 
-    opacity: .6;
+    opacity: .55;
 
     cursor: not-allowed;
 
@@ -299,13 +266,13 @@ textarea {
 
 .message {
 
+    display: none;
+
     margin-top: 15px;
 
-    padding: 14px;
+    padding: 15px;
 
     border-radius: 9px;
-
-    display: none;
 
 }
 
@@ -325,9 +292,22 @@ textarea {
 
     display: block;
 
-    background: #fdeaea;
+    background: #fde8e8;
 
     color: #a00000;
+
+}
+
+
+footer {
+
+    text-align: center;
+
+    padding: 25px;
+
+    color: #666;
+
+    font-size: 14px;
 
 }
 
@@ -335,6 +315,15 @@ textarea {
 @media (
     max-width: 700px
 ) {
+
+    .container {
+
+        width: 96%;
+
+        margin-top: 10px;
+
+    }
+
 
     .grid {
 
@@ -346,8 +335,7 @@ textarea {
 
     .full {
 
-        grid-column:
-            auto;
+        grid-column: auto;
 
     }
 
@@ -359,11 +347,16 @@ textarea {
     }
 
 
-    .container {
+    .radio-group {
 
-        width: 96%;
+        flex-direction: column;
 
-        margin-top: 12px;
+    }
+
+
+    .radio-option {
+
+        width: 100%;
 
     }
 

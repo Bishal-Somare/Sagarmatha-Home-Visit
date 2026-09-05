@@ -16,24 +16,6 @@ const sectionSelect =
     );
 
 
-const photoInput =
-    document.getElementById(
-        "studentPhoto"
-    );
-
-
-const photoPreview =
-    document.getElementById(
-        "photoPreview"
-    );
-
-
-const removePhoto =
-    document.getElementById(
-        "removePhoto"
-    );
-
-
 const submitButton =
     document.getElementById(
         "submitButton"
@@ -48,12 +30,10 @@ const message =
 
 let configuration = {};
 
-let compressedPhoto = null;
 
-
-/****************************************************
- * LOAD CONFIGURATION
- ****************************************************/
+/* ==================================================
+   LOAD CONFIGURATION
+================================================== */
 
 async function loadConfiguration() {
 
@@ -62,10 +42,8 @@ async function loadConfiguration() {
         classSelect.disabled =
             true;
 
-
         sectionSelect.disabled =
             true;
-
 
         classSelect.innerHTML = `
             <option value="">
@@ -106,7 +84,7 @@ async function loadConfiguration() {
 
             throw new Error(
                 result.error ||
-                "Unable to load configuration."
+                "Unable to load classes."
             );
 
         }
@@ -167,9 +145,9 @@ async function loadConfiguration() {
 }
 
 
-/****************************************************
- * SORT CLASSES
- ****************************************************/
+/* ==================================================
+   SORT CLASSES
+================================================== */
 
 function sortClasses(
     classes
@@ -187,7 +165,6 @@ function sortClasses(
 
             const aSpecial =
                 special.indexOf(a);
-
 
             const bSpecial =
                 special.indexOf(b);
@@ -227,14 +204,17 @@ function sortClasses(
             const aNumber =
                 Number(a);
 
-
             const bNumber =
                 Number(b);
 
 
             if (
-                !Number.isNaN(aNumber) &&
-                !Number.isNaN(bNumber)
+                !Number.isNaN(
+                    aNumber
+                ) &&
+                !Number.isNaN(
+                    bNumber
+                )
             ) {
 
                 return (
@@ -255,9 +235,9 @@ function sortClasses(
 }
 
 
-/****************************************************
- * POPULATE CLASSES
- ****************************************************/
+/* ==================================================
+   POPULATE CLASS
+================================================== */
 
 function populateClasses(
     classes
@@ -288,7 +268,7 @@ function populateClasses(
                 className;
 
 
-            option.textContent =
+            if (
                 [
                     "Nursery",
                     "LKG",
@@ -296,8 +276,19 @@ function populateClasses(
                 ].includes(
                     className
                 )
-                    ? className
-                    : `Class ${className}`;
+            ) {
+
+                option.textContent =
+                    className;
+
+            }
+
+            else {
+
+                option.textContent =
+                    `Class ${className}`;
+
+            }
 
 
             classSelect.appendChild(
@@ -310,9 +301,9 @@ function populateClasses(
 }
 
 
-/****************************************************
- * CLASS CHANGED
- ****************************************************/
+/* ==================================================
+   CLASS CHANGE
+================================================== */
 
 classSelect.addEventListener(
     "change",
@@ -347,7 +338,7 @@ classSelect.addEventListener(
 
 
         console.log(
-            "Selected class:",
+            "Selected Class:",
             selectedClass
         );
 
@@ -366,10 +357,9 @@ classSelect.addEventListener(
         ) {
 
             showMessage(
-                "No sections configured for this class.",
+                "No sections found for this class.",
                 "error"
             );
-
 
             return;
 
@@ -393,10 +383,9 @@ classSelect.addEventListener(
                     section;
 
 
-                sectionSelect
-                    .appendChild(
-                        option
-                    );
+                sectionSelect.appendChild(
+                    option
+                );
 
             }
         );
@@ -409,256 +398,9 @@ classSelect.addEventListener(
 );
 
 
-/****************************************************
- * PHOTO
- ****************************************************/
-
-photoInput.addEventListener(
-    "change",
-    async function () {
-
-        const file =
-            this.files[0];
-
-
-        if (!file) {
-
-            return;
-
-        }
-
-
-        if (
-            !file.type.startsWith(
-                "image/"
-            )
-        ) {
-
-            showMessage(
-                "Please select an image.",
-                "error"
-            );
-
-
-            this.value = "";
-
-
-            return;
-
-        }
-
-
-        try {
-
-            compressedPhoto =
-                await compressImage(
-                    file,
-                    1200,
-                    0.75
-                );
-
-
-            photoPreview.innerHTML = `
-
-                <img
-                    src="${compressedPhoto.base64}"
-                    alt="Student Photo"
-                >
-
-            `;
-
-
-            removePhoto.classList
-                .remove(
-                    "hidden"
-                );
-
-        }
-
-        catch (error) {
-
-            console.error(
-                error
-            );
-
-
-            showMessage(
-                "Unable to process photo.",
-                "error"
-            );
-
-        }
-
-    }
-);
-
-
-/****************************************************
- * REMOVE PHOTO
- ****************************************************/
-
-removePhoto.addEventListener(
-    "click",
-    function () {
-
-        photoInput.value =
-            "";
-
-
-        compressedPhoto =
-            null;
-
-
-        photoPreview.innerHTML = `
-
-            <span>
-                No photo selected
-            </span>
-
-        `;
-
-
-        removePhoto.classList
-            .add(
-                "hidden"
-            );
-
-    }
-);
-
-
-/****************************************************
- * COMPRESS IMAGE
- ****************************************************/
-
-function compressImage(
-    file,
-    maxWidth,
-    quality
-) {
-
-    return new Promise(
-        (resolve, reject) => {
-
-            const reader =
-                new FileReader();
-
-
-            reader.onload =
-                event => {
-
-                    const image =
-                        new Image();
-
-
-                    image.onload =
-                        () => {
-
-                            let width =
-                                image.width;
-
-
-                            let height =
-                                image.height;
-
-
-                            if (
-                                width >
-                                maxWidth
-                            ) {
-
-                                height =
-                                    height *
-                                    (
-                                        maxWidth /
-                                        width
-                                    );
-
-
-                                width =
-                                    maxWidth;
-
-                            }
-
-
-                            const canvas =
-                                document.createElement(
-                                    "canvas"
-                                );
-
-
-                            canvas.width =
-                                width;
-
-
-                            canvas.height =
-                                height;
-
-
-                            const context =
-                                canvas.getContext(
-                                    "2d"
-                                );
-
-
-                            context.drawImage(
-                                image,
-                                0,
-                                0,
-                                width,
-                                height
-                            );
-
-
-                            const base64 =
-                                canvas.toDataURL(
-                                    "image/jpeg",
-                                    quality
-                                );
-
-
-                            resolve({
-
-                                base64:
-
-                                    base64,
-
-                                mimeType:
-
-                                    "image/jpeg"
-
-                            });
-
-                        };
-
-
-                    image.onerror =
-                        reject;
-
-
-                    image.src =
-                        event.target.result;
-
-                };
-
-
-            reader.onerror =
-                reject;
-
-
-            reader.readAsDataURL(
-                file
-            );
-
-        }
-    );
-
-}
-
-
-/****************************************************
- * FORM SUBMISSION
- ****************************************************/
+/* ==================================================
+   SUBMIT
+================================================== */
 
 form.addEventListener(
     "submit",
@@ -676,7 +418,6 @@ form.addEventListener(
                 "error"
             );
 
-
             return;
 
         }
@@ -690,7 +431,6 @@ form.addEventListener(
                 "Please select a section.",
                 "error"
             );
-
 
             return;
 
@@ -737,18 +477,8 @@ form.addEventListener(
                 sectionSelect.value;
 
 
-            if (
-                compressedPhoto
-            ) {
-
-                data.photo =
-                    compressedPhoto;
-
-            }
-
-
             console.log(
-                "Submitting:",
+                "Submitting data:",
                 data
             );
 
@@ -782,7 +512,7 @@ form.addEventListener(
 
 
             console.log(
-                "Server result:",
+                "Server response:",
                 result
             );
 
@@ -800,7 +530,7 @@ form.addEventListener(
 
 
             showMessage(
-                `✓ Home visit saved successfully. Record ID: ${result.recordId}`,
+                `✓ Successfully saved. Record ID: ${result.recordId}`,
                 "success"
             );
 
@@ -819,29 +549,10 @@ form.addEventListener(
                 true;
 
 
-            compressedPhoto =
-                null;
-
-
-            photoPreview.innerHTML = `
-                <span>
-                    No photo selected
-                </span>
-            `;
-
-
-            removePhoto.classList
-                .add(
-                    "hidden"
-                );
-
-
-            window.scrollTo(
-                {
-                    top: 0,
-                    behavior: "smooth"
-                }
-            );
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
 
         }
 
@@ -864,7 +575,6 @@ form.addEventListener(
             submitButton.disabled =
                 false;
 
-
             submitButton.textContent =
                 "Submit Home Visit";
 
@@ -874,9 +584,9 @@ form.addEventListener(
 );
 
 
-/****************************************************
- * MESSAGE
- ****************************************************/
+/* ==================================================
+   MESSAGE
+================================================== */
 
 function showMessage(
     text,
@@ -886,15 +596,14 @@ function showMessage(
     message.textContent =
         text;
 
-
     message.className =
         `message ${type}`;
 
 }
 
 
-/****************************************************
- * START APPLICATION
- ****************************************************/
+/* ==================================================
+   START
+================================================== */
 
 loadConfiguration();

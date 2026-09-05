@@ -318,8 +318,7 @@ function collectFormData() {
         visitDate:
             value("visitDate"),
 
-        teacherName:
-            value("teacherName"),
+    
 
         studentName:
             value("studentName"),
