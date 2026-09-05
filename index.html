@@ -3,19 +3,19 @@
 
 <head>
 
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-    <title>Home Visit Form</title>
+  <title>Home Visit Form</title>
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 
 </head>
 
@@ -24,955 +24,928 @@
 
 <div class="container">
 
-    <header>
 
-        <h1>
-            Home Visit Form
-        </h1>
+  <header>
 
-        <p>
-            Details of Homely Activities of Students
-        </p>
+    <h1>
+      Home Visit Form
+    </h1>
 
-    </header>
+    <p>
+      Details of Homely Activities of Students
+    </p>
 
+  </header>
 
-    <form id="homeVisitForm">
 
+  <div
+    id="message"
+    class="message"
+  ></div>
 
-        <!-- VISIT INFORMATION -->
 
-        <section>
+  <form id="homeVisitForm">
 
-            <h2>
-                Visit Information
-            </h2>
 
-            <div class="grid">
+    <!-- VISIT INFORMATION -->
 
-                <div class="field">
+    <section>
 
-                    <label>
-                        Visit Date
-                    </label>
+      <h2>
+        Visit Information
+      </h2>
 
-                    <input
-                        type="date"
-                        name="visitDate"
-                    >
+      <div class="grid">
 
-                </div>
+        <div class="field">
 
-            </div>
+          <label>
+            Visit Date
+          </label>
 
-        </section>
+          <input
+            type="date"
+            name="visitDate"
+          >
 
+        </div>
 
-        <!-- STUDENT INFORMATION -->
+      </div>
 
-        <section>
+    </section>
 
-            <h2>
-                Student Information
-            </h2>
 
+    <!-- STUDENT INFORMATION -->
 
-            <div class="grid">
+    <section>
 
+      <h2>
+        Student Information
+      </h2>
 
-                <div class="field full">
 
-                    <label>
-                        Student Name *
-                    </label>
+      <div class="grid">
 
-                    <input
-                        type="text"
-                        name="studentName"
-                        required
-                    >
 
-                </div>
+        <div class="field full">
 
+          <label>
+            Student Name *
+          </label>
 
-                <div class="field">
+          <input
+            type="text"
+            name="studentName"
+            required
+          >
 
-                    <label>
-                        Class *
-                    </label>
+        </div>
 
-                    <select
-                        id="className"
-                        name="className"
-                        required
-                        disabled
-                    >
 
-                        <option value="">
-                            Loading classes...
-                        </option>
+        <div class="field">
 
-                    </select>
+          <label>
+            Class *
+          </label>
 
-                </div>
+          <select
+            id="className"
+            name="className"
+            required
+            disabled
+          >
 
+            <option value="">
+              Loading classes...
+            </option>
 
-                <div class="field">
+          </select>
 
-                    <label>
-                        Section *
-                    </label>
+        </div>
 
-                    <select
-                        id="section"
-                        name="section"
-                        required
-                        disabled
-                    >
 
-                        <option value="">
-                            Select Section
-                        </option>
+        <div class="field">
 
-                    </select>
+          <label>
+            Section *
+          </label>
 
-                </div>
+          <select
+            id="section"
+            name="section"
+            required
+            disabled
+          >
 
+            <option value="">
+              Select Section
+            </option>
 
-                <div class="field">
+          </select>
 
-                    <label>
-                        Roll No *
-                    </label>
+        </div>
 
-                    <input
-                        type="number"
-                        name="rollNo"
-                        min="1"
-                        required
-                    >
 
-                </div>
+        <div class="field">
 
+          <label>
+            Roll No *
+          </label>
 
-                <div class="field">
+          <input
+            type="number"
+            name="rollNo"
+            min="1"
+            required
+          >
 
-                    <label>
-                        No. of Siblings
-                    </label>
+        </div>
 
-                    <input
-                        type="number"
-                        name="siblings"
-                        min="0"
-                    >
 
-                </div>
+        <div class="field">
 
+          <label>
+            No. of Siblings
+          </label>
 
-                <div class="field">
+          <input
+            type="number"
+            name="siblings"
+            min="0"
+          >
 
-                    <label>
-                        Father's Name
-                    </label>
+        </div>
 
-                    <input
-                        type="text"
-                        name="fatherName"
-                    >
 
-                </div>
+        <div class="field">
 
+          <label>
+            Father's Name
+          </label>
 
-                <div class="field">
+          <input
+            type="text"
+            name="fatherName"
+          >
 
-                    <label>
-                        Mother's Name
-                    </label>
+        </div>
 
-                    <input
-                        type="text"
-                        name="motherName"
-                    >
 
-                </div>
+        <div class="field">
 
+          <label>
+            Mother's Name
+          </label>
 
-                <div class="field">
+          <input
+            type="text"
+            name="motherName"
+          >
 
-                    <label>
-                        Occupation
-                    </label>
+        </div>
 
-                    <input
-                        type="text"
-                        name="occupation"
-                    >
 
-                </div>
+        <div class="field">
 
+          <label>
+            Occupation
+          </label>
 
-                <div class="field">
+          <input
+            type="text"
+            name="occupation"
+          >
 
-                    <label>
-                        Contact
-                    </label>
+        </div>
 
-                    <input
-                        type="tel"
-                        name="contact"
-                    >
 
-                </div>
+        <div class="field">
 
+          <label>
+            Contact
+          </label>
 
-                <div class="field full">
+          <input
+            type="tel"
+            name="contact"
+          >
 
-                    <label>
-                        Address
-                    </label>
+        </div>
 
-                    <textarea
-                        name="address"
-                        rows="3"
-                    ></textarea>
 
-                </div>
+        <div class="field full">
 
+          <label>
+            Address
+          </label>
 
-            </div>
+          <textarea
+            name="address"
+            rows="3"
+          ></textarea>
 
-        </section>
+        </div>
 
+      </div>
 
-        <!-- STUDENT ACTIVITIES -->
+    </section>
 
-        <section>
 
-            <h2>
-                Student Activities
-            </h2>
+    <!-- STUDENT ACTIVITIES -->
 
+    <section>
 
-            <div class="field">
+      <h2>
+        Student Activities
+      </h2>
 
-                <label>
-                    Where does the student do reading homework?
-                </label>
 
-                <textarea
-                    name="readingHomework"
-                    rows="2"
-                ></textarea>
+      <div class="field">
 
-            </div>
+        <label>
+          Where does the student do reading homework?
+        </label>
 
+        <textarea
+          name="readingHomework"
+          rows="2"
+        ></textarea>
 
-            <div class="field">
+      </div>
 
-                <label>
-                    Where does the student do writing homework?
-                </label>
 
-                <textarea
-                    name="writingHomework"
-                    rows="2"
-                ></textarea>
+      <div class="field">
 
-            </div>
+        <label>
+          Where does the student do writing homework?
+        </label>
 
+        <textarea
+          name="writingHomework"
+          rows="2"
+        ></textarea>
 
-            <div class="field">
+      </div>
 
-                <label>
-                    What is the student interested in?
-                </label>
 
-                <textarea
-                    name="interestedIn"
-                    rows="2"
-                ></textarea>
+      <div class="field">
 
-            </div>
+        <label>
+          What is the student interested in?
+        </label>
 
+        <textarea
+          name="interestedIn"
+          rows="2"
+        ></textarea>
 
-            <div class="field">
+      </div>
 
-                <label>
-                    Behaviour With Family
-                </label>
 
-                <div class="radio-group">
+      <div class="field">
 
-                    <label class="radio-option">
+        <label>
+          Behaviour With Family
+        </label>
 
-                        <input
-                            type="radio"
-                            name="familyBehaviour"
-                            value="Good"
-                        >
+        <div class="radio-group">
 
-                        Good
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="familyBehaviour"
+              value="Good"
+            >
+            Good
+          </label>
 
-                    </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="familyBehaviour"
+              value="Average"
+            >
+            Average
+          </label>
 
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="familyBehaviour"
+              value="Bad"
+            >
+            Bad
+          </label>
 
-                    <label class="radio-option">
+        </div>
 
-                        <input
-                            type="radio"
-                            name="familyBehaviour"
-                            value="Average"
-                        >
+      </div>
 
-                        Average
 
-                    </label>
+      <div class="field">
 
+        <label>
+          Response To Guests
+        </label>
 
-                    <label class="radio-option">
+        <div class="radio-group">
 
-                        <input
-                            type="radio"
-                            name="familyBehaviour"
-                            value="Bad"
-                        >
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guestResponse"
+              value="Properly"
+            >
+            Properly
+          </label>
 
-                        Bad
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guestResponse"
+              value="Average"
+            >
+            Average
+          </label>
 
-                    </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guestResponse"
+              value="Coldly"
+            >
+            Coldly
+          </label>
 
-                </div>
+        </div>
 
-            </div>
+      </div>
 
 
-            <div class="field">
+      <div class="field">
 
-                <label>
-                    Response To Guests
-                </label>
+        <label>
+          Keeps Things In Original Place
+        </label>
 
-                <div class="radio-group">
+        <div class="radio-group">
 
-                    <label class="radio-option">
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="keepThings"
+              value="Yes"
+            >
+            Yes
+          </label>
 
-                        <input
-                            type="radio"
-                            name="guestResponse"
-                            value="Properly"
-                        >
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="keepThings"
+              value="No"
+            >
+            No
+          </label>
 
-                        Properly
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="keepThings"
+              value="Sometimes"
+            >
+            Sometimes
+          </label>
 
-                    </label>
+        </div>
 
+      </div>
 
-                    <label class="radio-option">
 
-                        <input
-                            type="radio"
-                            name="guestResponse"
-                            value="Average"
-                        >
+      <div class="field">
 
-                        Average
+        <label>
+          Eats Junk Food
+        </label>
 
-                    </label>
+        <div class="radio-group">
 
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="junkFood"
+              value="Yes"
+            >
+            Yes
+          </label>
 
-                    <label class="radio-option">
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="junkFood"
+              value="No"
+            >
+            No
+          </label>
 
-                        <input
-                            type="radio"
-                            name="guestResponse"
-                            value="Coldly"
-                        >
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="junkFood"
+              value="Sometimes"
+            >
+            Sometimes
+          </label>
 
-                        Coldly
+        </div>
 
-                    </label>
+      </div>
 
-                </div>
 
-            </div>
+      <div class="field">
 
+        <label>
+          Mobile/Laptop Usage
+        </label>
 
-            <div class="field">
+        <div class="radio-group">
 
-                <label>
-                    Keeps Things In Original Place
-                </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="mobileLaptop"
+              value="Properly"
+            >
+            Properly
+          </label>
 
-                <div class="radio-group">
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="mobileLaptop"
+              value="Commonly"
+            >
+            Commonly
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="keepThings"
-                            value="Yes"
-                        >
-                        Yes
-                    </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="mobileLaptop"
+              value="Too much"
+            >
+            Too much
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="keepThings"
-                            value="No"
-                        >
-                        No
-                    </label>
+        </div>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="keepThings"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
+      </div>
 
-                </div>
 
-            </div>
+      <div class="field">
 
+        <label>
+          TV Watching
+        </label>
 
-            <div class="field">
+        <div class="radio-group">
 
-                <label>
-                    Eats Junk Food
-                </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="tvWatching"
+              value="Sometimes only"
+            >
+            Sometimes only
+          </label>
 
-                <div class="radio-group">
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="tvWatching"
+              value="Commonly"
+            >
+            Commonly
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="junkFood"
-                            value="Yes"
-                        >
-                        Yes
-                    </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="tvWatching"
+              value="Too much"
+            >
+            Too much
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="junkFood"
-                            value="No"
-                        >
-                        No
-                    </label>
+        </div>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="junkFood"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
+      </div>
 
-                </div>
 
-            </div>
+      <div class="field">
 
+        <label>
+          Assists Household Activities
+        </label>
 
-            <div class="field">
+        <div class="radio-group">
 
-                <label>
-                    Mobile/Laptop Usage
-                </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="householdActivities"
+              value="Yes"
+            >
+            Yes
+          </label>
 
-                <div class="radio-group">
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="householdActivities"
+              value="No"
+            >
+            No
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="mobileLaptop"
-                            value="Properly"
-                        >
-                        Properly
-                    </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="householdActivities"
+              value="Sometimes"
+            >
+            Sometimes
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="mobileLaptop"
-                            value="Commonly"
-                        >
-                        Commonly
-                    </label>
+        </div>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="mobileLaptop"
-                            value="Too much"
-                        >
-                        Too much
-                    </label>
+      </div>
 
-                </div>
 
-            </div>
+      <div class="field">
 
+        <label>
+          Washes Personal Clothes/Dishes
+        </label>
 
-            <div class="field">
+        <div class="radio-group">
 
-                <label>
-                    TV Watching
-                </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="personalClothes"
+              value="Yes"
+            >
+            Yes
+          </label>
 
-                <div class="radio-group">
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="personalClothes"
+              value="No"
+            >
+            No
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="tvWatching"
-                            value="Sometimes only"
-                        >
-                        Sometimes only
-                    </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="personalClothes"
+              value="Sometimes"
+            >
+            Sometimes
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="tvWatching"
-                            value="Commonly"
-                        >
-                        Commonly
-                    </label>
+        </div>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="tvWatching"
-                            value="Too much"
-                        >
-                        Too much
-                    </label>
+      </div>
 
-                </div>
 
-            </div>
+      <div class="field">
 
+        <label>
+          What does the student say about school, teachers and friends?
+        </label>
 
-            <div class="field">
+        <textarea
+          name="schoolOpinion"
+          rows="4"
+        ></textarea>
 
-                <label>
-                    Assists Household Activities
-                </label>
+      </div>
 
-                <div class="radio-group">
+    </section>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="householdActivities"
-                            value="Yes"
-                        >
-                        Yes
-                    </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="householdActivities"
-                            value="No"
-                        >
-                        No
-                    </label>
+    <!-- GUARDIAN -->
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="householdActivities"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
+    <section>
 
-                </div>
+      <h2>
+        Guardian Information
+      </h2>
 
-            </div>
 
+      <div class="field">
 
-            <div class="field">
+        <label>
+          Guardian Appreciates Child
+        </label>
 
-                <label>
-                    Washes Personal Clothes/Dishes
-                </label>
+        <div class="radio-group">
 
-                <div class="radio-group">
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianAppreciates"
+              value="Yes"
+            >
+            Yes
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="personalClothes"
-                            value="Yes"
-                        >
-                        Yes
-                    </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianAppreciates"
+              value="No"
+            >
+            No
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="personalClothes"
-                            value="No"
-                        >
-                        No
-                    </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianAppreciates"
+              value="Sometimes"
+            >
+            Sometimes
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="personalClothes"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
+        </div>
 
-                </div>
+      </div>
 
-            </div>
 
+      <div class="field">
 
-            <div class="field">
+        <label>
+          Guardian Involves Child In Social Activities
+        </label>
 
-                <label>
-                    What does the student say about school, teachers and friends?
-                </label>
+        <div class="radio-group">
 
-                <textarea
-                    name="schoolOpinion"
-                    rows="4"
-                ></textarea>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianSocialActivities"
+              value="Yes"
+            >
+            Yes
+          </label>
 
-            </div>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianSocialActivities"
+              value="No"
+            >
+            No
+          </label>
 
-        </section>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianSocialActivities"
+              value="Sometimes"
+            >
+            Sometimes
+          </label>
 
+        </div>
 
-        <!-- GUARDIAN -->
+      </div>
 
-        <section>
 
-            <h2>
-                Guardian Information
-            </h2>
+      <div class="field">
 
+        <label>
+          Guardian Keeps Child Informed About Family
+        </label>
 
-            <div class="field">
+        <div class="radio-group">
 
-                <label>
-                    Guardian Appreciates Child
-                </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianFamilyInformation"
+              value="Yes"
+            >
+            Yes
+          </label>
 
-                <div class="radio-group">
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianFamilyInformation"
+              value="No"
+            >
+            No
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianAppreciates"
-                            value="Yes"
-                        >
-                        Yes
-                    </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianFamilyInformation"
+              value="Sometimes"
+            >
+            Sometimes
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianAppreciates"
-                            value="No"
-                        >
-                        No
-                    </label>
+        </div>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianAppreciates"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
+      </div>
 
-                </div>
 
-            </div>
+      <div class="field">
 
+        <label>
+          Guardian Gives Time To Child
+        </label>
 
-            <div class="field">
+        <div class="radio-group">
 
-                <label>
-                    Guardian Involves Child In Social Activities
-                </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianTime"
+              value="Yes"
+            >
+            Yes
+          </label>
 
-                <div class="radio-group">
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianTime"
+              value="No"
+            >
+            No
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianSocialActivities"
-                            value="Yes"
-                        >
-                        Yes
-                    </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianTime"
+              value="Sometimes"
+            >
+            Sometimes
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianSocialActivities"
-                            value="No"
-                        >
-                        No
-                    </label>
+        </div>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianSocialActivities"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
+      </div>
 
-                </div>
 
-            </div>
+      <div class="field">
 
+        <label>
+          Guardian Attends Guardian Programs
+        </label>
 
-            <div class="field">
+        <div class="radio-group">
 
-                <label>
-                    Guardian Keeps Child Informed About Family
-                </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianPrograms"
+              value="Yes"
+            >
+            Yes
+          </label>
 
-                <div class="radio-group">
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianPrograms"
+              value="No"
+            >
+            No
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianFamilyInformation"
-                            value="Yes"
-                        >
-                        Yes
-                    </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianPrograms"
+              value="Sometimes"
+            >
+            Sometimes
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianFamilyInformation"
-                            value="No"
-                        >
-                        No
-                    </label>
+        </div>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianFamilyInformation"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
+      </div>
 
-                </div>
 
-            </div>
+      <div class="field">
 
+        <label>
+          Guardian Encourages Child Despite Simple Mistakes
+        </label>
 
-            <div class="field">
+        <div class="radio-group">
 
-                <label>
-                    Guardian Gives Time To Child
-                </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianMistakes"
+              value="Yes"
+            >
+            Yes
+          </label>
 
-                <div class="radio-group">
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianMistakes"
+              value="No"
+            >
+            No
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianTime"
-                            value="Yes"
-                        >
-                        Yes
-                    </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="guardianMistakes"
+              value="Sometimes"
+            >
+            Sometimes
+          </label>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianTime"
-                            value="No"
-                        >
-                        No
-                    </label>
+        </div>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianTime"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
+      </div>
 
-                </div>
+    </section>
 
-            </div>
 
+    <!-- NEW STUDENT -->
 
-            <div class="field">
+    <section>
 
-                <label>
-                    Guardian Attends Guardian Programs
-                </label>
+      <h2>
+        New Student Information
+      </h2>
 
-                <div class="radio-group">
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianPrograms"
-                            value="Yes"
-                        >
-                        Yes
-                    </label>
+      <div class="grid">
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianPrograms"
-                            value="No"
-                        >
-                        No
-                    </label>
+        <div class="field">
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianPrograms"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
+          <label>
+            New Student Name
+          </label>
 
-                </div>
+          <input
+            type="text"
+            name="newStudentName"
+          >
 
-            </div>
+        </div>
 
 
-            <div class="field">
+        <div class="field">
 
-                <label>
-                    Guardian Encourages Child Despite Simple Mistakes
-                </label>
+          <label>
+            New Student Address
+          </label>
 
-                <div class="radio-group">
+          <input
+            type="text"
+            name="newStudentAddress"
+          >
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianMistakes"
-                            value="Yes"
-                        >
-                        Yes
-                    </label>
+        </div>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianMistakes"
-                            value="No"
-                        >
-                        No
-                    </label>
+      </div>
 
-                    <label class="radio-option">
-                        <input
-                            type="radio"
-                            name="guardianMistakes"
-                            value="Sometimes"
-                        >
-                        Sometimes
-                    </label>
+    </section>
 
-                </div>
 
-            </div>
+    <button
+      type="submit"
+      id="submitButton"
+    >
+      Submit Home Visit
+    </button>
 
-        </section>
 
+  </form>
 
-        <!-- NEW STUDENT -->
 
-        <section>
-
-            <h2>
-                New Student Information
-            </h2>
-
-
-            <div class="grid">
-
-                <div class="field">
-
-                    <label>
-                        New Student Name
-                    </label>
-
-                    <input
-                        type="text"
-                        name="newStudentName"
-                    >
-
-                </div>
-
-
-                <div class="field">
-
-                    <label>
-                        New Student Address
-                    </label>
-
-                    <input
-                        type="text"
-                        name="newStudentAddress"
-                    >
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <button
-            type="submit"
-            id="submitButton"
-            class="submit-button"
-        >
-            Submit Home Visit
-        </button>
-
-
-        <div
-            id="message"
-            class="message"
-        ></div>
-
-
-    </form>
-
-
-    <!-- CENTERED CREDIT -->
-
-    <footer>
-
-        Developed by Jay Bhandari and Bishal Somare Magar
-
-    </footer>
+  <footer>
+    Developed by Jay Bhandari and Bishal Somare Magar
+  </footer>
 
 
 </div>
