@@ -1,91 +1,59 @@
-export default async function handler(
-    req,
-    res
-) {
-
+export default async function handler(req, res) {
     try {
-
-        const appsScriptUrl =
-            process.env.APPS_SCRIPT_URL;
-
+        const appsScriptUrl = process.env.APPS_SCRIPT_URL;
 
         if (!appsScriptUrl) {
-
             return res.status(500).json({
-
                 success: false,
-
-                error:
-                    "APPS_SCRIPT_URL environment variable is missing."
-
+                error: "APPS_SCRIPT_URL environment variable is missing."
             });
-
         }
 
+        const url =
+            `${appsScriptUrl}?action=config`;
 
-        const response =
-            await fetch(
-                `${appsScriptUrl}?action=config`,
-                {
-                    cache: "no-store"
-                }
-            );
+        console.log("Calling Apps Script:", url);
 
+        const response = await fetch(url, {
+            method: "GET",
+            redirect: "follow",
+            cache: "no-store"
+        });
 
-        const text =
-            await response.text();
+        const text = await response.text();
 
+        console.log("Apps Script HTTP status:", response.status);
+        console.log("Apps Script content type:", response.headers.get("content-type"));
+        console.log("Apps Script response:", text);
 
-        console.log(
-            "Apps Script configuration:",
-            text
-        );
-
+        if (!response.ok) {
+            return res.status(502).json({
+                success: false,
+                error: `Apps Script returned HTTP ${response.status}`,
+                response: text
+            });
+        }
 
         let data;
 
-
         try {
-
-            data =
-                JSON.parse(
-                    text
-                );
-
+            data = JSON.parse(text);
+        } catch (parseError) {
+            return res.status(502).json({
+                success: false,
+                error: "Apps Script did not return valid JSON.",
+                responsePreview: text.substring(0, 1000)
+            });
         }
 
-        catch {
+        return res.status(200).json(data);
 
-            throw new Error(
-                "Apps Script did not return valid JSON."
-            );
-
-        }
-
-
-        return res
-            .status(200)
-            .json(data);
-
-    }
-
-
-    catch (error) {
-
-        console.error(
-            error
-        );
-
+    } catch (error) {
+        console.error("Configuration error:", error);
 
         return res.status(500).json({
-
             success: false,
-
-            error:
-                error.message
-
+            error: error.message
         });
-
     }
-
 }
