@@ -1,8 +1,165 @@
+// export default async function handler(req, res) {
+
+//   if (
+//     req.method !== "POST"
+//   ) {
+
+//     return res.status(405).json({
+
+//       success: false,
+
+//       error:
+//         "Only POST is allowed."
+
+//     });
+
+//   }
+
+
+//   try {
+
+//     const scriptUrl =
+//       process.env.APPS_SCRIPT_URL;
+
+
+//     if (!scriptUrl) {
+
+//       return res.status(500).json({
+
+//         success: false,
+
+//         error:
+//           "APPS_SCRIPT_URL is not configured in Vercel."
+
+//       });
+
+//     }
+
+
+//     const response =
+//       await fetch(
+//         scriptUrl,
+//         {
+
+//           method: "POST",
+
+//           headers: {
+
+//             "Content-Type":
+//               "application/json"
+
+//           },
+
+//           body:
+//             JSON.stringify(
+//               req.body
+//             ),
+
+//           redirect:
+//             "follow"
+
+//         }
+//       );
+
+
+//     const text =
+//       await response.text();
+
+
+//     console.log(
+//       "Apps Script submit status:",
+//       response.status
+//     );
+
+
+//     console.log(
+//       "Apps Script submit response:",
+//       text
+//     );
+
+
+//     if (
+//       !response.ok
+//     ) {
+
+//       return res.status(502).json({
+
+//         success: false,
+
+//         error:
+//           "Apps Script HTTP " +
+//           response.status,
+
+//         details:
+//           text.substring(
+//             0,
+//             1000
+//           )
+
+//       });
+
+//     }
+
+
+//     let data;
+
+
+//     try {
+
+//       data =
+//         JSON.parse(text);
+
+//     }
+
+//     catch (error) {
+
+//       return res.status(502).json({
+
+//         success: false,
+
+//         error:
+//           "Apps Script did not return JSON.",
+
+//         details:
+//           text.substring(
+//             0,
+//             1000
+//           )
+
+//       });
+
+//     }
+
+
+//     return res
+//       .status(200)
+//       .json(data);
+
+//   }
+
+//   catch (error) {
+
+//     console.error(
+//       error
+//     );
+
+
+//     return res.status(500).json({
+
+//       success: false,
+
+//       error:
+//         error.message
+
+//     });
+
+//   }
+
+// }
+
 export default async function handler(req, res) {
 
-  if (
-    req.method !== "POST"
-  ) {
+  if (req.method !== "POST") {
 
     return res.status(405).json({
 
@@ -36,6 +193,16 @@ export default async function handler(req, res) {
     }
 
 
+    const body = {
+
+      ...req.body,
+
+      action:
+        "submit"
+
+    };
+
+
     const response =
       await fetch(
         scriptUrl,
@@ -52,7 +219,7 @@ export default async function handler(req, res) {
 
           body:
             JSON.stringify(
-              req.body
+              body
             ),
 
           redirect:
@@ -66,48 +233,15 @@ export default async function handler(req, res) {
       await response.text();
 
 
-    console.log(
-      "Apps Script submit status:",
-      response.status
-    );
-
-
-    console.log(
-      "Apps Script submit response:",
-      text
-    );
-
-
-    if (
-      !response.ok
-    ) {
-
-      return res.status(502).json({
-
-        success: false,
-
-        error:
-          "Apps Script HTTP " +
-          response.status,
-
-        details:
-          text.substring(
-            0,
-            1000
-          )
-
-      });
-
-    }
-
-
     let data;
 
 
     try {
 
       data =
-        JSON.parse(text);
+        JSON.parse(
+          text
+        );
 
     }
 
@@ -132,8 +266,14 @@ export default async function handler(req, res) {
 
 
     return res
-      .status(200)
-      .json(data);
+      .status(
+        response.ok
+          ? 200
+          : 502
+      )
+      .json(
+        data
+      );
 
   }
 

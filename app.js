@@ -1,516 +1,516 @@
-/******************************************************
- * HOME VISIT FRONTEND
- ******************************************************/
+// /******************************************************
+//  * HOME VISIT FRONTEND
+//  ******************************************************/
 
-const classSelect =
-    document.getElementById("className");
+// const classSelect =
+//     document.getElementById("className");
 
-const sectionSelect =
-    document.getElementById("section");
+// const sectionSelect =
+//     document.getElementById("section");
 
-const form =
-    document.getElementById("homeVisitForm");
+// const form =
+//     document.getElementById("homeVisitForm");
 
-const submitButton =
-    document.getElementById("submitButton");
+// const submitButton =
+//     document.getElementById("submitButton");
 
-const statusBox =
-    document.getElementById("status");
+// const statusBox =
+//     document.getElementById("status");
 
 
-/******************************************************
- * LOAD CLASS CONFIGURATION
- ******************************************************/
+// /******************************************************
+//  * LOAD CLASS CONFIGURATION
+//  ******************************************************/
 
-async function loadConfiguration() {
+// async function loadConfiguration() {
 
-    try {
+//     try {
 
-        setStatus(
-            "Loading classes...",
-            ""
-        );
+//         setStatus(
+//             "Loading classes...",
+//             ""
+//         );
 
-        const response =
-            await fetch(
-                "/api/config"
-            );
+//         const response =
+//             await fetch(
+//                 "/api/config"
+//             );
 
-        const result =
-            await response.json();
+//         const result =
+//             await response.json();
 
-        if (!result.success) {
+//         if (!result.success) {
 
-            throw new Error(
-                result.error ||
-                "Unable to load classes."
-            );
+//             throw new Error(
+//                 result.error ||
+//                 "Unable to load classes."
+//             );
 
-        }
+//         }
 
-        populateClasses(
-            result.classes
-        );
+//         populateClasses(
+//             result.classes
+//         );
 
-        setStatus("", "");
+//         setStatus("", "");
 
-    } catch (error) {
+//     } catch (error) {
 
-        console.error(error);
+//         console.error(error);
 
-        setStatus(
-            "Unable to load class configuration.",
-            "error"
-        );
+//         setStatus(
+//             "Unable to load class configuration.",
+//             "error"
+//         );
 
-    }
+//     }
 
-}
+// }
 
 
-/******************************************************
- * POPULATE CLASSES
- ******************************************************/
+// /******************************************************
+//  * POPULATE CLASSES
+//  ******************************************************/
 
-function populateClasses(classes) {
+// function populateClasses(classes) {
 
-    classSelect.innerHTML =
-        `<option value="">
-            Select Class
-        </option>`;
+//     classSelect.innerHTML =
+//         `<option value="">
+//             Select Class
+//         </option>`;
 
-    Object.keys(classes).forEach(
-        className => {
+//     Object.keys(classes).forEach(
+//         className => {
 
-            const option =
-                document.createElement(
-                    "option"
-                );
+//             const option =
+//                 document.createElement(
+//                     "option"
+//                 );
 
-            option.value =
-                className;
+//             option.value =
+//                 className;
 
-            option.textContent =
-                `Class ${className}`;
+//             option.textContent =
+//                 `Class ${className}`;
 
-            classSelect.appendChild(
-                option
-            );
+//             classSelect.appendChild(
+//                 option
+//             );
 
-        }
-    );
+//         }
+//     );
 
-    window.schoolClasses =
-        classes;
+//     window.schoolClasses =
+//         classes;
 
-}
+// }
 
 
-/******************************************************
- * CLASS CHANGE
- ******************************************************/
+// /******************************************************
+//  * CLASS CHANGE
+//  ******************************************************/
 
-classSelect.addEventListener(
-    "change",
-    function () {
+// classSelect.addEventListener(
+//     "change",
+//     function () {
 
-        const selectedClass =
-            this.value;
+//         const selectedClass =
+//             this.value;
 
-        sectionSelect.innerHTML =
-            `<option value="">
-                Select Section
-            </option>`;
+//         sectionSelect.innerHTML =
+//             `<option value="">
+//                 Select Section
+//             </option>`;
 
-        sectionSelect.disabled =
-            true;
+//         sectionSelect.disabled =
+//             true;
 
-        if (
-            !selectedClass ||
-            !window.schoolClasses
-        ) {
-            return;
-        }
+//         if (
+//             !selectedClass ||
+//             !window.schoolClasses
+//         ) {
+//             return;
+//         }
 
-        const sections =
-            window.schoolClasses[
-                selectedClass
-            ] || [];
+//         const sections =
+//             window.schoolClasses[
+//                 selectedClass
+//             ] || [];
 
-        sections.forEach(
-            section => {
+//         sections.forEach(
+//             section => {
 
-                const option =
-                    document.createElement(
-                        "option"
-                    );
+//                 const option =
+//                     document.createElement(
+//                         "option"
+//                     );
 
-                option.value =
-                    section;
+//                 option.value =
+//                     section;
 
-                option.textContent =
-                    section;
+//                 option.textContent =
+//                     section;
 
-                sectionSelect.appendChild(
-                    option
-                );
+//                 sectionSelect.appendChild(
+//                     option
+//                 );
 
-            }
-        );
+//             }
+//         );
 
-        sectionSelect.disabled =
-            sections.length === 0;
+//         sectionSelect.disabled =
+//             sections.length === 0;
 
-    }
-);
+//     }
+// );
 
 
-/******************************************************
- * FORM SUBMISSION
- ******************************************************/
+// /******************************************************
+//  * FORM SUBMISSION
+//  ******************************************************/
 
-form.addEventListener(
-    "submit",
-    async function (event) {
+// form.addEventListener(
+//     "submit",
+//     async function (event) {
 
-        event.preventDefault();
+//         event.preventDefault();
 
-        clearStatus();
+//         clearStatus();
 
 
-        /**********************************************
-         * CHECK CLASS
-         **********************************************/
+//         /**********************************************
+//          * CHECK CLASS
+//          **********************************************/
 
-        if (!classSelect.value) {
+//         if (!classSelect.value) {
 
-            setStatus(
-                "Please select a class.",
-                "error"
-            );
+//             setStatus(
+//                 "Please select a class.",
+//                 "error"
+//             );
 
-            classSelect.focus();
+//             classSelect.focus();
 
-            return;
+//             return;
 
-        }
+//         }
 
 
-        /**********************************************
-         * CHECK SECTION
-         **********************************************/
+//         /**********************************************
+//          * CHECK SECTION
+//          **********************************************/
 
-        if (!sectionSelect.value) {
+//         if (!sectionSelect.value) {
 
-            setStatus(
-                "Please select a section.",
-                "error"
-            );
+//             setStatus(
+//                 "Please select a section.",
+//                 "error"
+//             );
 
-            sectionSelect.focus();
+//             sectionSelect.focus();
 
-            return;
+//             return;
 
-        }
+//         }
 
 
-        /**********************************************
-         * DISABLE BUTTON
-         **********************************************/
+//         /**********************************************
+//          * DISABLE BUTTON
+//          **********************************************/
 
-        submitButton.disabled =
-            true;
+//         submitButton.disabled =
+//             true;
 
-        submitButton.textContent =
-            "Submitting...";
+//         submitButton.textContent =
+//             "Submitting...";
 
 
-        try {
+//         try {
 
-            const data =
-                collectFormData();
+//             const data =
+//                 collectFormData();
 
 
-            const response =
-                await fetch(
-                    "/api/submit",
-                    {
-                        method: "POST",
+//             const response =
+//                 await fetch(
+//                     "/api/submit",
+//                     {
+//                         method: "POST",
 
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
+//                         headers: {
+//                             "Content-Type":
+//                                 "application/json"
+//                         },
 
-                        body:
-                            JSON.stringify(data)
-                    }
-                );
+//                         body:
+//                             JSON.stringify(data)
+//                     }
+//                 );
 
 
-            const result =
-                await response.json();
+//             const result =
+//                 await response.json();
 
 
-            if (!result.success) {
+//             if (!result.success) {
 
-                throw new Error(
-                    result.error ||
-                    "Submission failed."
-                );
+//                 throw new Error(
+//                     result.error ||
+//                     "Submission failed."
+//                 );
 
-            }
+//             }
 
 
-            /****************************************
-             * SUCCESS
-             ****************************************/
+//             /****************************************
+//              * SUCCESS
+//              ****************************************/
 
-            setStatus(
-                `✓ Record saved successfully to ${result.sheet}.`,
-                "success"
-            );
+//             setStatus(
+//                 `✓ Record saved successfully to ${result.sheet}.`,
+//                 "success"
+//             );
 
 
-            form.reset();
+//             form.reset();
 
-            sectionSelect.innerHTML =
-                `<option value="">
-                    Select Section
-                </option>`;
+//             sectionSelect.innerHTML =
+//                 `<option value="">
+//                     Select Section
+//                 </option>`;
 
-            sectionSelect.disabled =
-                true;
+//             sectionSelect.disabled =
+//                 true;
 
 
-        } catch (error) {
+//         } catch (error) {
 
-            console.error(error);
+//             console.error(error);
 
-            setStatus(
-                error.message ||
-                "Something went wrong.",
-                "error"
-            );
+//             setStatus(
+//                 error.message ||
+//                 "Something went wrong.",
+//                 "error"
+//             );
 
-        } finally {
+//         } finally {
 
-            submitButton.disabled =
-                false;
+//             submitButton.disabled =
+//                 false;
 
-            submitButton.textContent =
-                "Submit Home Visit";
+//             submitButton.textContent =
+//                 "Submit Home Visit";
 
-        }
+//         }
 
-    }
-);
+//     }
+// );
 
 
-/******************************************************
- * COLLECT FORM DATA
- ******************************************************/
+// /******************************************************
+//  * COLLECT FORM DATA
+//  ******************************************************/
 
-function collectFormData() {
+// function collectFormData() {
 
-    return {
+//     return {
 
-        visitDate:
-            value("visitDate"),
+//         visitDate:
+//             value("visitDate"),
 
     
 
-        studentName:
-            value("studentName"),
+//         studentName:
+//             value("studentName"),
 
-        className:
-            value("className"),
+//         className:
+//             value("className"),
 
-        section:
-            value("section"),
+//         section:
+//             value("section"),
 
-        rollNo:
-            value("rollNo"),
+//         rollNo:
+//             value("rollNo"),
 
-        siblings:
-            value("siblings"),
+//         siblings:
+//             value("siblings"),
 
-        fatherName:
-            value("fatherName"),
+//         fatherName:
+//             value("fatherName"),
 
-        motherName:
-            value("motherName"),
+//         motherName:
+//             value("motherName"),
 
-        occupation:
-            value("occupation"),
+//         occupation:
+//             value("occupation"),
 
-        address:
-            value("address"),
+//         address:
+//             value("address"),
 
-        contact:
-            value("contact"),
+//         contact:
+//             value("contact"),
 
 
-        readingHomework:
-            value("readingHomework"),
+//         readingHomework:
+//             value("readingHomework"),
 
-        writingHomework:
-            value("writingHomework"),
+//         writingHomework:
+//             value("writingHomework"),
 
-        interestedIn:
-            value("interestedIn"),
+//         interestedIn:
+//             value("interestedIn"),
 
 
-        familyBehaviour:
-            radioValue("familyBehaviour"),
+//         familyBehaviour:
+//             radioValue("familyBehaviour"),
 
-        guestResponse:
-            radioValue("guestResponse"),
+//         guestResponse:
+//             radioValue("guestResponse"),
 
-        keepThings:
-            radioValue("keepThings"),
+//         keepThings:
+//             radioValue("keepThings"),
 
-        junkFood:
-            radioValue("junkFood"),
+//         junkFood:
+//             radioValue("junkFood"),
 
-        mobileLaptop:
-            radioValue("mobileLaptop"),
+//         mobileLaptop:
+//             radioValue("mobileLaptop"),
 
-        tvWatching:
-            radioValue("tvWatching"),
+//         tvWatching:
+//             radioValue("tvWatching"),
 
-        householdActivities:
-            radioValue("householdActivities"),
+//         householdActivities:
+//             radioValue("householdActivities"),
 
-        personalClothes:
-            radioValue("personalClothes"),
+//         personalClothes:
+//             radioValue("personalClothes"),
 
-        schoolOpinion:
-            value("schoolOpinion"),
+//         schoolOpinion:
+//             value("schoolOpinion"),
 
 
-        guardianAppreciates:
-            radioValue(
-                "guardianAppreciates"
-            ),
+//         guardianAppreciates:
+//             radioValue(
+//                 "guardianAppreciates"
+//             ),
 
-        guardianSocialActivities:
-            radioValue(
-                "guardianSocialActivities"
-            ),
+//         guardianSocialActivities:
+//             radioValue(
+//                 "guardianSocialActivities"
+//             ),
 
-        guardianFamilyInformation:
-            radioValue(
-                "guardianFamilyInformation"
-            ),
+//         guardianFamilyInformation:
+//             radioValue(
+//                 "guardianFamilyInformation"
+//             ),
 
-        guardianTime:
-            radioValue(
-                "guardianTime"
-            ),
+//         guardianTime:
+//             radioValue(
+//                 "guardianTime"
+//             ),
 
-        guardianPrograms:
-            radioValue(
-                "guardianPrograms"
-            ),
+//         guardianPrograms:
+//             radioValue(
+//                 "guardianPrograms"
+//             ),
 
-        guardianMistakes:
-            radioValue(
-                "guardianMistakes"
-            ),
+//         guardianMistakes:
+//             radioValue(
+//                 "guardianMistakes"
+//             ),
 
 
-        newStudentName:
-            value("newStudentName"),
+//         newStudentName:
+//             value("newStudentName"),
 
-        newStudentAddress:
-            value("newStudentAddress"),
+//         newStudentAddress:
+//             value("newStudentAddress"),
 
 
-        remarks:
-            value("remarks")
+//         remarks:
+//             value("remarks")
 
-    };
+//     };
 
-}
+// }
 
 
-/******************************************************
- * NORMAL INPUT VALUE
- ******************************************************/
+// /******************************************************
+//  * NORMAL INPUT VALUE
+//  ******************************************************/
 
-function value(id) {
+// function value(id) {
 
-    const element =
-        document.getElementById(id);
+//     const element =
+//         document.getElementById(id);
 
-    return element
-        ? element.value.trim()
-        : "";
+//     return element
+//         ? element.value.trim()
+//         : "";
 
-}
+// }
 
 
-/******************************************************
- * RADIO VALUE
- ******************************************************/
+// /******************************************************
+//  * RADIO VALUE
+//  ******************************************************/
 
-function radioValue(name) {
+// function radioValue(name) {
 
-    const selected =
-        document.querySelector(
-            `input[name="${name}"]:checked`
-        );
+//     const selected =
+//         document.querySelector(
+//             `input[name="${name}"]:checked`
+//         );
 
-    return selected
-        ? selected.value
-        : "";
+//     return selected
+//         ? selected.value
+//         : "";
 
-}
+// }
 
 
-/******************************************************
- * STATUS
- ******************************************************/
+// /******************************************************
+//  * STATUS
+//  ******************************************************/
 
-function setStatus(
-    message,
-    type
-) {
+// function setStatus(
+//     message,
+//     type
+// ) {
 
-    statusBox.textContent =
-        message;
+//     statusBox.textContent =
+//         message;
 
-    statusBox.className =
-        "status";
+//     statusBox.className =
+//         "status";
 
-    if (type) {
+//     if (type) {
 
-        statusBox.classList.add(
-            type
-        );
+//         statusBox.classList.add(
+//             type
+//         );
 
-    }
+//     }
 
-}
+// }
 
 
-function clearStatus() {
+// function clearStatus() {
 
-    setStatus("", "");
+//     setStatus("", "");
 
-}
+// }
 
 
-/******************************************************
- * INITIALIZATION
- ******************************************************/
+// /******************************************************
+//  * INITIALIZATION
+//  ******************************************************/
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+// document.addEventListener(
+//     "DOMContentLoaded",
+//     function () {
 
-        loadConfiguration();
+//         loadConfiguration();
 
-    }
-);
+//     }
+// );
