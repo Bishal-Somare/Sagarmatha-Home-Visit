@@ -1200,16 +1200,30 @@
 
             <div class="field">
 
-              <label for="newStudentContact">
+              <!-- <label for="newStudentContact">
                 New Student Contact
               </label>
 
               <input
                 id="newStudentContact"
                 name="newStudentContact"
-                type="text"
+                type="ph"
                 placeholder="Contact number"
-              >
+              > -->
+
+              <label for="newStudentContact">
+  New Student Contact
+</label>
+
+<input
+  id="newStudentContact"
+  name="newStudentContact"
+  type="tel"
+  inputmode="numeric"
+  pattern="[0-9]{10}"
+  maxlength="10"
+  placeholder="Contact number"
+>
 
             </div>
 
@@ -1280,7 +1294,7 @@
           <div class="developer">
 
             <strong>
-              Bishal Somare Magar
+              Bishal Somare
             </strong>
 
             <a href="tel:9848134815">
