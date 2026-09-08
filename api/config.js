@@ -90,6 +90,10 @@ export default async function handler(req, res) {
 
 
     return res
+      .setHeader(
+        "Cache-Control",
+        "public, max-age=0, s-maxage=120, stale-while-revalidate=300"
+      )
       .status(200)
       .json(data);
 

@@ -195,6 +195,103 @@ function showMessage(
 
 
 /* =====================================================
+   CONFIG CACHE
+   The class/section list rarely changes, so repeat page
+   loads reuse a short-lived local copy instead of hitting
+   Apps Script every single time.
+===================================================== */
+
+const CONFIG_CACHE_KEY =
+  "hv_config_cache_v1";
+
+const CONFIG_CACHE_TTL_MS =
+  10 * 60 * 1000; // 10 minutes
+
+
+function readConfigCache() {
+
+  try {
+
+    const raw =
+      localStorage.getItem(
+        CONFIG_CACHE_KEY
+      );
+
+
+    if (!raw) {
+
+      return null;
+
+    }
+
+
+    const parsed =
+      JSON.parse(raw);
+
+
+    if (
+      !parsed ||
+      !parsed.classes ||
+      !parsed.savedAt
+    ) {
+
+      return null;
+
+    }
+
+
+    if (
+      Date.now() - parsed.savedAt >
+      CONFIG_CACHE_TTL_MS
+    ) {
+
+      return null;
+
+    }
+
+
+    return parsed.classes;
+
+  }
+
+  catch (error) {
+
+    return null;
+
+  }
+
+}
+
+
+function writeConfigCache(
+  classes
+) {
+
+  try {
+
+    localStorage.setItem(
+      CONFIG_CACHE_KEY,
+      JSON.stringify(
+        {
+          classes: classes,
+          savedAt: Date.now()
+        }
+      )
+    );
+
+  }
+
+  catch (error) {
+
+    // Ignore storage errors (private browsing, quota, etc.)
+    // — caching is a nice-to-have, never required.
+
+  }
+
+}
+
+
+/* =====================================================
    LOAD CONFIGURATION
 ===================================================== */
 
@@ -208,6 +305,29 @@ async function loadConfiguration() {
         Loading classes...
       </option>
       `;
+
+
+    const cachedClasses =
+      readConfigCache();
+
+
+    if (
+      cachedClasses &&
+      Object.keys(cachedClasses).length > 0
+    ) {
+
+      configuration =
+        cachedClasses;
+
+      populateLoginClasses(
+        Object.keys(
+          configuration
+        )
+      );
+
+      return;
+
+    }
 
 
     const response =
@@ -256,6 +376,11 @@ async function loadConfiguration() {
       );
 
     }
+
+
+    writeConfigCache(
+      configuration
+    );
 
 
     populateLoginClasses(
