@@ -43,7 +43,7 @@
       </h1>
 
       <p class="login-subtitle">
-        Select your class and enter the class Password
+        Select your class and enter the password
       </p>
 
 
@@ -95,7 +95,7 @@
       <div class="login-field">
 
         <label for="loginPin">
-          Class Password
+          Class password
         </label>
 
         <div class="pin-wrapper">
@@ -103,7 +103,7 @@
           <input
             id="loginPin"
             type="password"
-            placeholder="Enter class password"
+            placeholder="Enter class PIN"
             autocomplete="off"
           >
 
@@ -225,6 +225,91 @@
       ></div>
 
 
+      <!-- MODE SWITCH -->
+
+      <div class="mode-switch">
+
+        <button
+          type="button"
+          id="newModeButton"
+          class="mode-button active"
+          data-mode="new"
+        >
+          + New Home Visit
+        </button>
+
+        <button
+          type="button"
+          id="editModeButton"
+          class="mode-button"
+          data-mode="edit"
+        >
+          ✎ Edit Existing Record
+        </button>
+
+      </div>
+
+
+      <!-- EDIT PANEL -->
+
+      <div
+        id="editPanel"
+        class="edit-panel hidden"
+      >
+
+        <div class="edit-header">
+
+          <h2>
+            Edit Existing Record
+          </h2>
+
+          <p>
+            Select a student you already recorded during a home visit for this class/section to update their information.
+          </p>
+
+        </div>
+
+
+        <div class="edit-search">
+
+          <div class="field">
+
+            <label for="editStudentSelect">
+              Select Student
+            </label>
+
+            <select
+              id="editStudentSelect"
+            >
+
+              <option value="">
+                Loading students...
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <button
+            type="button"
+            id="loadRecordButton"
+            class="primary-button"
+          >
+            Load Record
+          </button>
+
+        </div>
+
+
+        <div
+          id="recordStatus"
+          class="record-status"
+        ></div>
+
+      </div>
+
+
 
       <!-- FORM -->
 
@@ -232,6 +317,13 @@
         id="homeVisitForm"
         autocomplete="off"
       >
+
+        <input
+          type="hidden"
+          id="recordId"
+          name="recordId"
+          value=""
+        >
 
 
         <!-- STUDENT INFORMATION -->
@@ -445,6 +537,45 @@
                 rows="3"
                 placeholder="Enter student's address"
               ></textarea>
+
+            </div>
+
+
+            <div class="field full">
+
+              <label for="visitLocationDisplay">
+                Visit Location
+              </label>
+
+              <div class="location-row">
+
+                <input
+                  id="visitLocationDisplay"
+                  type="text"
+                  placeholder="Not captured yet"
+                  readonly
+                >
+
+                <button
+                  type="button"
+                  id="captureLocationButton"
+                  class="location-button"
+                >
+                  📍 Capture Location
+                </button>
+
+              </div>
+
+              <input
+                type="hidden"
+                id="visitLocation"
+                name="visitLocation"
+                value=""
+              >
+
+              <p class="field-hint">
+                Captures the home's GPS location as a Google Maps link, using this device's current position.
+              </p>
 
             </div>
 
@@ -1200,30 +1331,16 @@
 
             <div class="field">
 
-              <!-- <label for="newStudentContact">
+              <label for="newStudentContact">
                 New Student Contact
               </label>
 
               <input
                 id="newStudentContact"
                 name="newStudentContact"
-                type="ph"
+                type="tel"
                 placeholder="Contact number"
-              > -->
-
-              <label for="newStudentContact">
-  New Student Contact
-</label>
-
-<input
-  id="newStudentContact"
-  name="newStudentContact"
-  type="tel"
-  inputmode="numeric"
-  pattern="[0-9]{10}"
-  maxlength="10"
-  placeholder="Contact number"
->
+              >
 
             </div>
 
@@ -1250,6 +1367,14 @@
               →
             </span>
 
+          </button>
+
+          <button
+            type="button"
+            id="cancelEditButton"
+            class="mode-button hidden"
+          >
+            ← Back To Student List
           </button>
 
           <p>
