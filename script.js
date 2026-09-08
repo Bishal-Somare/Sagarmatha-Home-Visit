@@ -195,6 +195,230 @@ function showMessage(
 
 
 /* =====================================================
+   FETCH WITH RETRY
+   With 40 teachers potentially using this at once, a
+   request can occasionally land during a brief overload
+   (Apps Script's shared execution limit, a cold start,
+   a dropped connection). Instead of failing outright,
+   transient failures are retried a few times with
+   backoff. Real validation errors ("Incorrect PIN",
+   "Student name is required", etc.) are never retried —
+   only infrastructure-level failures are.
+===================================================== */
+
+const RETRY_MAX_ATTEMPTS =
+  4;
+
+const RETRY_BASE_DELAY_MS =
+  700;
+
+const RETRYABLE_HTTP_STATUS = [
+  408,
+  429,
+  500,
+  502,
+  503,
+  504
+];
+
+const RETRYABLE_MESSAGE_SNIPPETS = [
+  "lock timeout",
+  "too many simultaneous",
+  "service invoked too many times",
+  "internal error",
+  "timed out",
+  "temporarily unavailable",
+  "did not return json"
+];
+
+
+function wait(
+  ms
+) {
+
+  return new Promise(
+    function(resolve) {
+
+      setTimeout(
+        resolve,
+        ms
+      );
+
+    }
+  );
+
+}
+
+
+function isRetryableFailure(
+  response,
+  result
+) {
+
+  if (
+    response &&
+    RETRYABLE_HTTP_STATUS.indexOf(
+      response.status
+    ) !== -1
+  ) {
+
+    return true;
+
+  }
+
+
+  if (!result) {
+
+    // Response body wasn't JSON at all — most likely a
+    // transient host/proxy error page.
+    return true;
+
+  }
+
+
+  const errorText =
+    String(
+      result.error || ""
+    ).toLowerCase();
+
+
+  return RETRYABLE_MESSAGE_SNIPPETS.some(
+    function(snippet) {
+
+      return (
+        errorText.indexOf(
+          snippet
+        ) !== -1
+      );
+
+    }
+  );
+
+}
+
+
+async function fetchWithRetry(
+  url,
+  options,
+  onRetry
+) {
+
+  let attempt =
+    0;
+
+
+  while (true) {
+
+    attempt += 1;
+
+
+    let response =
+      null;
+
+    let result =
+      null;
+
+    let networkError =
+      null;
+
+
+    try {
+
+      response =
+        await fetch(
+          url,
+          options
+        );
+
+
+      try {
+
+        result =
+          await response.json();
+
+      }
+
+      catch (parseError) {
+
+        result =
+          null;
+
+      }
+
+    }
+
+    catch (error) {
+
+      networkError =
+        error;
+
+    }
+
+
+    const attemptsLeft =
+      attempt < RETRY_MAX_ATTEMPTS;
+
+
+    const shouldRetry =
+      attemptsLeft &&
+      (
+        networkError ||
+        isRetryableFailure(
+          response,
+          result
+        )
+      );
+
+
+    if (!shouldRetry) {
+
+      if (networkError) {
+
+        throw networkError;
+
+      }
+
+
+      return {
+        response: response,
+        result: result
+      };
+
+    }
+
+
+    if (
+      typeof onRetry === "function"
+    ) {
+
+      onRetry(
+        attempt + 1,
+        RETRY_MAX_ATTEMPTS
+      );
+
+    }
+
+
+    const backoff =
+      RETRY_BASE_DELAY_MS *
+      Math.pow(2, attempt - 1);
+
+    const jitter =
+      Math.floor(
+        Math.random() * 250
+      );
+
+
+    await wait(
+      backoff + jitter
+    );
+
+  }
+
+}
+
+
+/* =====================================================
    CONFIG CACHE
    The class/section list rarely changes, so repeat page
    loads reuse a short-lived local copy instead of hitting
@@ -330,18 +554,17 @@ async function loadConfiguration() {
     }
 
 
-    const response =
-      await fetch(
+    const {
+      response,
+      result
+    } =
+      await fetchWithRetry(
         "/api/config",
         {
           method: "GET",
           cache: "no-store"
         }
       );
-
-
-    const result =
-      await response.json();
 
 
     if (
@@ -776,8 +999,11 @@ async function login() {
 
   try {
 
-    const response =
-      await fetch(
+    const {
+      response,
+      result
+    } =
+      await fetchWithRetry(
         "/api/auth",
         {
 
@@ -802,12 +1028,25 @@ async function login() {
 
             })
 
+        },
+        function(
+          attempt,
+          maxAttempts
+        ) {
+
+          loginButton.innerHTML =
+            `
+            <span>
+              Busy, retrying (` +
+              attempt +
+              `/` +
+              maxAttempts +
+              `)...
+            </span>
+            `;
+
         }
       );
-
-
-    const result =
-      await response.json();
 
 
     if (
@@ -1292,19 +1531,35 @@ async function loadStudentList() {
       );
 
 
-    const response =
-      await fetch(
+    const {
+      response,
+      result
+    } =
+      await fetchWithRetry(
         "/api/students?" +
         params.toString(),
         {
           method: "GET",
           cache: "no-store"
+        },
+        function(
+          attempt,
+          maxAttempts
+        ) {
+
+          editStudentSelect.innerHTML =
+            `
+            <option value="">
+              Busy, retrying (` +
+              attempt +
+              `/` +
+              maxAttempts +
+              `)...
+            </option>
+            `;
+
         }
       );
-
-
-    const result =
-      await response.json();
 
 
     if (
@@ -1495,19 +1750,31 @@ loadRecordButton.addEventListener(
         );
 
 
-      const response =
-        await fetch(
+      const {
+        response,
+        result
+      } =
+        await fetchWithRetry(
           "/api/record?" +
           params.toString(),
           {
             method: "GET",
             cache: "no-store"
+          },
+          function(
+            attempt,
+            maxAttempts
+          ) {
+
+            loadRecordButton.textContent =
+              "Busy, retrying (" +
+              attempt +
+              "/" +
+              maxAttempts +
+              ")...";
+
           }
         );
-
-
-      const result =
-        await response.json();
 
 
       if (
@@ -1926,8 +2193,11 @@ form.addEventListener(
           : "/api/submit";
 
 
-      const response =
-        await fetch(
+      const {
+        response,
+        result
+      } =
+        await fetchWithRetry(
           endpoint,
           {
 
@@ -1943,12 +2213,25 @@ form.addEventListener(
                 data
               )
 
+          },
+          function(
+            attempt,
+            maxAttempts
+          ) {
+
+            submitButton.innerHTML =
+              `
+              <span>
+                Busy, retrying (` +
+                attempt +
+                `/` +
+                maxAttempts +
+                `)...
+              </span>
+              `;
+
           }
         );
-
-
-      const result =
-        await response.json();
 
 
       if (
